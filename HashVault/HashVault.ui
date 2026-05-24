@@ -119,6 +119,8 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
+
+      <!-- Login Page -->
       <widget class="QWidget" name="loginPage">
        <property name="styleSheet">
         <string notr="true">QWidget#LoginPage { background-color: #0F1421; }</string>
@@ -361,7 +363,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="usernameInput">
+           <widget class="QLineEdit" name="loginUsernameInput">
             <property name="styleSheet">
              <string notr="true">
                 QLineEdit {
@@ -407,7 +409,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="masterPasswordInput">
+           <widget class="QLineEdit" name="loginPasswordInput">
             <property name="styleSheet">
              <string notr="true">
                 QLineEdit {
@@ -1997,28 +1999,28 @@ QLineEdit:focus { border: 1px solid #4F8EF7; }
             </spacer>
            </item>
            <item>
-            <widget class="QLineEdit" name="fullNameInput">
+            <widget class="QLineEdit" name="registerFullNameInput">
              <property name="placeholderText">
               <string>Full Name</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="usernameInput">
+            <widget class="QLineEdit" name="registerUsernameInput">
              <property name="placeholderText">
               <string>Username</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="emailInput">
+            <widget class="QLineEdit" name="registerEmailInput">
              <property name="placeholderText">
               <string>Email Address</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="passwordInput">
+            <widget class="QLineEdit" name="registerPasswordInput">
              <property name="echoMode">
               <enum>QLineEdit::EchoMode::Password</enum>
              </property>
@@ -2028,7 +2030,7 @@ QLineEdit:focus { border: 1px solid #4F8EF7; }
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="confirmPasswordInput">
+            <widget class="QLineEdit" name="registerConfirmPasswordInput">
              <property name="echoMode">
               <enum>QLineEdit::EchoMode::Password</enum>
              </property>

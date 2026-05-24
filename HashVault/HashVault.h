@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_HashVault.h"
+#include <QSqlDatabase>
 
 class HashVault : public QMainWindow
 {
@@ -13,7 +14,6 @@ public:
 
 
 private slots:
-    void handleLogin();
     void openSettings();
     //void backToDashboard();
     void openAddPasswordPage();
@@ -21,8 +21,11 @@ private slots:
     void backToDashboardFromSettings();
     void openRegisterPage();
     void openLoginPage();
+    void registerUser();
+    void loginUser();
 
 private:
     Ui::HashVaultClass ui;
+	QSqlDatabase db;        // create global database object to be used across the application
 };
 
