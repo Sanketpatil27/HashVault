@@ -1,9 +1,30 @@
 #include "HashVault.h"
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QDebug>
+#include <qmessagebox.h>
 
 HashVault::HashVault(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
+
+	QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
+
+	db.setHostName("localhost");
+	db.setDatabaseName("hashvault");
+	db.setUserName("postgres");
+	db.setPassword("root");
+	db.setPort(5432);
+
+
+    if (db.open())
+        QMessageBox::information(this, "Database", "Connected Successfully!");
+    else
+        QMessageBox::warning(this,"Database Error",db.lastError().text());
+
+
 
     // add dummy entries in dashboard table 
     ui.passwordTable->horizontalHeader()->setDefaultSectionSize(180);
