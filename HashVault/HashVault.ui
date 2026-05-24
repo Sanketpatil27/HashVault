@@ -1,0 +1,2104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>HashVaultClass</class>
+ <widget class="QMainWindow" name="HashVaultClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1100</width>
+    <height>700</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>SecureVault - Password Manager</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+        QMainWindow {
+            background-color: #0F1421;
+        }
+
+        <!-- Adding Global CSS -->
+
+        <!-- GLOBAL BUTTON STYLE  -->
+        QPushButton {
+            background-color: #4F8EF7;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            min-height: 12px;
+            font-family: "Segoe UI";
+            padding: 10px 16px;
+        }
+
+        QPushButton:hover {
+            background-color: #3A7BD5;
+        }
+
+        QPushButton:pressed {
+            background-color: #2E6BC4;
+        }
+
+        <!--  GLOBAL INPUT STYLE -->
+        QLineEdit,
+        QTextEdit {
+            background-color: #252D40;
+            color: #FFFFFF;
+            border: 1px solid #2A3244;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-family: "Segoe UI";
+        }
+
+        QLineEdit:focus,
+        QTextEdit:focus {
+            border: 1px solid #4F8EF7;
+        }
+
+        <!-- GLOBAL LABEL STYLE -->
+        QLabel {
+            color: #C0C8D8;
+            font-family: "Segoe UI";
+            background: transparent;
+        }
+
+        <!-- End of Global CSS -->
+
+
+        QScrollBar:vertical {
+            background: #1A1F2E;
+            width: 6px;
+            border-radius: 3px;
+            margin: 0;
+        }
+        QScrollBar::handle:vertical {
+            background: #3A4255;
+            border-radius: 3px;
+            min-height: 24px;
+        }
+        QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+            height: 0px;
+        }
+        QScrollBar:horizontal {
+            background: #1A1F2E;
+            height: 6px;
+            border-radius: 3px;
+        }
+        QScrollBar::handle:horizontal {
+            background: #3A4255;
+            border-radius: 3px;
+            min-width: 24px;
+        }
+        QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+            width: 0px;
+        }
+   </string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="centralLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="loginPage">
+       <property name="styleSheet">
+        <string notr="true">QWidget#LoginPage { background-color: #0F1421; }</string>
+       </property>
+       <layout class="QHBoxLayout" name="loginMainLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" name="leftPanelLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>48</number>
+          </property>
+          <property name="topMargin">
+           <number>60</number>
+          </property>
+          <property name="rightMargin">
+           <number>48</number>
+          </property>
+          <property name="bottomMargin">
+           <number>60</number>
+          </property>
+          <item>
+           <spacer name="leftTopSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="logoEmoji">
+            <property name="styleSheet">
+             <string notr="true">font-size: 64px; background: transparent; color: #FFFFFF;</string>
+            </property>
+            <property name="text">
+             <string>🔐</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="brandName">
+            <property name="styleSheet">
+             <string notr="true">
+                color: #FFFFFF; font-size: 26px; font-weight: bold;
+                font-family: &quot;Segoe UI&quot;; background: transparent; margin-top: 14px;
+              </string>
+            </property>
+            <property name="text">
+             <string>SecureVault</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="brandTagline">
+            <property name="styleSheet">
+             <string notr="true">
+                color: #6B7A99; font-size: 13px; font-family: &quot;Segoe UI&quot;;
+                background: transparent; margin-top: 10px; line-height: 1.6;
+              </string>
+            </property>
+            <property name="text">
+             <string>Your passwords, protected with military-grade encryption.</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="leftMidSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>32</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="feature1">
+            <property name="styleSheet">
+             <string notr="true">color: #4F8EF7; font-size: 13px; background: transparent; margin: 5px 0; font-family: &quot;Segoe UI&quot;;</string>
+            </property>
+            <property name="text">
+             <string>✓  AES-256 Encryption</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="feature2">
+            <property name="styleSheet">
+             <string notr="true">color: #4F8EF7; font-size: 13px; background: transparent; margin: 5px 0; font-family: &quot;Segoe UI&quot;;</string>
+            </property>
+            <property name="text">
+             <string>✓  Master Password Protection</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="feature3">
+            <property name="styleSheet">
+             <string notr="true">color: #4F8EF7; font-size: 13px; background: transparent; margin: 5px 0; font-family: &quot;Segoe UI&quot;;</string>
+            </property>
+            <property name="text">
+             <string>✓  Secure Local Storage</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="leftBottomSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="rightPanelLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>72</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>72</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <spacer name="rightTopSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="welcomeLabel">
+            <property name="styleSheet">
+             <string notr="true">
+                color: #FFFFFF; font-size: 28px; font-weight: bold;
+                font-family: &quot;Segoe UI&quot;; background: transparent;
+              </string>
+            </property>
+            <property name="text">
+             <string>Welcome back</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="welcomeSubLabel">
+            <property name="styleSheet">
+             <string notr="true">
+                color: #6B7A99; font-size: 13px; font-family: &quot;Segoe UI&quot;;
+                background: transparent; margin-bottom: 8px;
+              </string>
+            </property>
+            <property name="text">
+             <string>Sign in to access your vault</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="formTopGap">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Policy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>24</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="usernameLabel">
+            <property name="styleSheet">
+             <string notr="true">
+                color: #C0C8D8; font-size: 12px; font-weight: bold;
+                font-family: &quot;Segoe UI&quot;; background: transparent; margin-bottom: 4px;
+              </string>
+            </property>
+            <property name="text">
+             <string>Username</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="usernameInput">
+            <property name="styleSheet">
+             <string notr="true">
+                QLineEdit {
+                    background-color: #1E2536; color: #FFFFFF;
+                    border: 1px solid #2A3244; border-radius: 8px;
+                    padding: 12px 16px; font-size: 14px; font-family: &quot;Segoe UI&quot;;
+                }
+                QLineEdit:focus { border: 1px solid #4F8EF7; background-color: #222B40; }
+              </string>
+            </property>
+            <property name="placeholderText">
+             <string>Enter your username</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="fieldGap1">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Policy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>16</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="masterPwdLabel">
+            <property name="styleSheet">
+             <string notr="true">
+                color: #C0C8D8; font-size: 12px; font-weight: bold;
+                font-family: &quot;Segoe UI&quot;; background: transparent; margin-bottom: 4px;
+              </string>
+            </property>
+            <property name="text">
+             <string>Master Password</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="masterPasswordInput">
+            <property name="styleSheet">
+             <string notr="true">
+                QLineEdit {
+                    background-color: #1E2536; color: #FFFFFF;
+                    border: 1px solid #2A3244; border-radius: 8px;
+                    padding: 12px 16px; font-size: 14px; font-family: &quot;Segoe UI&quot;;
+                }
+                QLineEdit:focus { border: 1px solid #4F8EF7; background-color: #222B40; }
+              </string>
+            </property>
+            <property name="echoMode">
+             <enum>QLineEdit::EchoMode::Password</enum>
+            </property>
+            <property name="placeholderText">
+             <string>Enter your master password</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="fieldGap2">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Policy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>24</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+            <widget class="QCheckBox" name="showPasswordCheck">
+             <property name="text">
+              <string>Show Password</string>
+             </property>
+            </widget>
+           </item>
+           <!-- Adding SPACER -->
+            <item>
+            <spacer name="loginSectionGap">
+            <property name="orientation">
+            <enum>Qt::Orientation::Vertical</enum>
+            </property>
+
+            <property name="sizeType">
+            <enum>QSizePolicy::Policy::Fixed</enum>
+            </property>
+
+            <property name="sizeHint" stdset="0">
+            <size>
+                <width>20</width>
+                <height>18</height>
+            </size>
+            </property>
+            </spacer>
+            </item>
+          <item>
+           <widget class="QPushButton" name="loginButton">
+            <property name="styleSheet">
+             <string notr="true">
+                QPushButton {
+                    background-color: #4F8EF7; color: #FFFFFF; border: none;
+                    border-radius: 8px; font-size: 15px; font-weight: bold; font-family: &quot;Segoe UI&quot;;
+                }
+                QPushButton:hover { background-color: #3A7BD5; }
+                QPushButton:pressed { background-color: #2E6BC4; }
+              </string>
+            </property>
+            <property name="minimumSize">
+                <size>
+                    <width>0</width>
+                    <height>45</height>
+                </size>
+            </property>
+            <property name="text">
+             <string>Login</string>
+            </property>
+           </widget>
+          </item>
+
+          <!-- Adding SPACER -->
+            <item>
+            <spacer name="loginSectionGap">
+            <property name="orientation">
+            <enum>Qt::Orientation::Vertical</enum>
+            </property>
+
+            <property name="sizeType">
+            <enum>QSizePolicy::Policy::Fixed</enum>
+            </property>
+
+            <property name="sizeHint" stdset="0">
+            <size>
+                <width>20</width>
+                <height>18</height>
+            </size>
+            </property>
+            </spacer>
+            </item>
+
+          <item>
+           <widget class="QPushButton" name="registerRedirectBtn">
+            <property name="styleSheet">
+             <string notr="true">
+                QPushButton#registerRedirectBtn {
+                    background: transparent;
+                    color: #4F8EF7;
+                    border: none;
+                    font-size: 12px;
+                    font-family: &quot;Segoe UI&quot;;
+                }
+
+                QPushButton#registerRedirectBtn:hover {
+                    color: #7DB2FF;
+                }
+              </string>
+            </property>
+            <property name="text">
+             <string>Don't have an account? Register</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="rightBottomSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="dashboardPage">
+       <property name="styleSheet">
+        <string notr="true">QWidget#dashboardPage { background-color: #0F1421; }</string>
+       </property>
+       <layout class="QHBoxLayout" name="dashboardMainLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" name="sidebarLayout">
+          <property name="spacing">
+           <number>12</number>
+          </property>
+          <property name="leftMargin">
+           <number>14</number>
+          </property>
+          <property name="topMargin">
+           <number>22</number>
+          </property>
+          <property name="rightMargin">
+           <number>14</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="sidebarAppName">
+            <property name="styleSheet">
+             <string notr="true">
+                color: #FFFFFF; font-size: 16px; font-weight: bold;
+                font-family: &quot;Segoe UI&quot;; background: transparent; padding: 6px 4px; margin-bottom: 6px;
+              </string>
+            </property>
+            <property name="text">
+             <string>🔐 SecureVault</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="sidebarDiv1">
+            <property name="styleSheet">
+             <string notr="true">color: #2A3244; margin: 6px 0;</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Shape::HLine</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Shadow::Plain</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="sidebarVaultLabel">
+            <property name="styleSheet">
+             <string notr="true">
+                color: #4F8EF7; font-size: 9px; font-weight: bold; letter-spacing: 1px;
+                font-family: &quot;Segoe UI&quot;; background: transparent; padding: 4px 8px; margin-top: 4px;
+              </string>
+            </property>
+            <property name="text">
+             <string>VAULT</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="navAllPasswords">
+            <property name="styleSheet">
+             <string notr="true">
+                QPushButton {
+                    background-color: #4F8EF7; color: #FFFFFF; border: none;
+                    border-radius: 8px; font-size: 13px; font-weight: bold; font-family: &quot;Segoe UI&quot;;
+                    text-align: left; padding-left: 16px;
+                }
+                QPushButton:hover { background-color: #3A7BD5; }
+              </string>
+            </property>
+            <property name="text">
+             <string>🔑  All Passwords</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="navFavorites">
+            <property name="styleSheet">
+             <string notr="true">
+                QPushButton {
+                    background-color: transparent; color: #8892A4; border: none;
+                    border-radius: 8px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
+                    text-align: left; padding-left: 16px;
+                }
+                QPushButton:hover { background-color: #1E2536; color: #FFFFFF; }
+              </string>
+            </property>
+            <property name="text">
+             <string>⭐  Favorites</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="sidebarCatLabel">
+            <property name="styleSheet">
+             <string notr="true">
+                color: #4F8EF7; font-size: 9px; font-weight: bold; letter-spacing: 1px;
+                font-family: &quot;Segoe UI&quot;; background: transparent; padding: 4px 8px; margin-top: 8px;
+              </string>
+            </property>
+            <property name="text">
+             <string>CATEGORIES</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="navSocial">
+            <property name="styleSheet">
+             <string notr="true">
+                QPushButton {
+                    background-color: transparent; color: #8892A4; border: none;
+                    border-radius: 8px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
+                    text-align: left; padding-left: 16px;
+                }
+                QPushButton:hover { background-color: #1E2536; color: #FFFFFF; }
+              </string>
+            </property>
+            <property name="text">
+             <string>👥  Social Media</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="navBanking">
+            <property name="styleSheet">
+             <string notr="true">
+                QPushButton {
+                    background-color: transparent; color: #8892A4; border: none;
+                    border-radius: 8px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
+                    text-align: left; padding-left: 16px;
+                }
+                QPushButton:hover { background-color: #1E2536; color: #FFFFFF; }
+              </string>
+            </property>
+            <property name="text">
+             <string>🏢  Banking</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="navWork">
+            <property name="styleSheet">
+             <string notr="true">
+                QPushButton {
+                    background-color: transparent; color: #8892A4; border: none;
+                    border-radius: 8px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
+                    text-align: left; padding-left: 16px;
+                }
+                QPushButton:hover { background-color: #1E2536; color: #FFFFFF; }
+              </string>
+            </property>
+            <property name="text">
+             <string>💼  Work</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="sidebarSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QFrame" name="sidebarDiv2">
+            <property name="styleSheet">
+             <string notr="true">color: #2A3244; margin: 4px 0;</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Shape::HLine</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Shadow::Plain</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="navSettings">
+            <property name="styleSheet">
+             <string notr="true">
+QPushButton {
+    background-color: transparent; color: #8892A4; border: none;
+    border-radius: 8px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
+    text-align: left; padding-left: 16px;
+}
+QPushButton:hover { background-color: #1E2536; color: #FFFFFF; }
+              </string>
+            </property>
+            <property name="text">
+             <string>⚙  Settings</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="navLogout">
+            <property name="styleSheet">
+             <string notr="true">
+QPushButton {
+    background-color: transparent; color: #E05C5C; border: none;
+    border-radius: 8px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
+    text-align: left; padding-left: 16px;
+}
+QPushButton:hover { background-color: #2D1F1F; color: #FF6B6B; }
+              </string>
+            </property>
+            <property name="text">
+             <string>🚪  Logout</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="contentLayout">
+          <property name="spacing">
+           <number>14</number>
+          </property>
+          <property name="leftMargin">
+           <number>30</number>
+          </property>
+          <property name="topMargin">
+           <number>26</number>
+          </property>
+          <property name="rightMargin">
+           <number>30</number>
+          </property>
+          <property name="bottomMargin">
+           <number>26</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="headerRow">
+            <item>
+             <widget class="QLabel" name="dashboardTitle">
+              <property name="styleSheet">
+               <string notr="true">
+color: #FFFFFF; font-size: 22px; font-weight: bold;
+font-family: &quot;Segoe UI&quot;; background: transparent;
+                </string>
+              </property>
+              <property name="text">
+               <string>All Passwords</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="headerSpacer">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="addPasswordBtn">
+              <property name="styleSheet">
+               <string notr="true">
+                    QPushButton {
+                        background-color: #4F8EF7; color: #FFFFFF; border: none;
+                        border-radius: 8px; font-size: 13px; font-weight: bold;
+                        font-family: &quot;Segoe UI&quot;; padding: 10px 20px;
+                    }
+                    QPushButton:hover { background-color: #3A7BD5; }
+                    QPushButton:pressed { background-color: #2E6BC4; }
+                </string>
+              </property>
+              <property name="text">
+               <string>+  Add Password</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="statsRow">
+            <property name="spacing">
+             <number>14</number>
+            </property>
+            <item>
+             <layout class="QVBoxLayout">
+              <property name="spacing">
+               <number>4</number>
+              </property>
+              <property name="leftMargin">
+               <number>18</number>
+              </property>
+              <property name="topMargin">
+               <number>14</number>
+              </property>
+              <property name="rightMargin">
+               <number>18</number>
+              </property>
+              <property name="bottomMargin">
+               <number>14</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="statTotalCount">
+                <property name="styleSheet">
+                 <string notr="true">color: #4F8EF7; font-size: 24px; font-weight: bold; background: transparent; border: none;</string>
+                </property>
+                <property name="text">
+                 <string>0</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="statTotalLabel">
+                <property name="styleSheet">
+                 <string notr="true">color: #8892A4; font-size: 12px; background: transparent; border: none; font-family: &quot;Segoe UI&quot;;</string>
+                </property>
+                <property name="text">
+                 <string>Total Passwords</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout">
+              <property name="spacing">
+               <number>4</number>
+              </property>
+              <property name="leftMargin">
+               <number>18</number>
+              </property>
+              <property name="topMargin">
+               <number>14</number>
+              </property>
+              <property name="rightMargin">
+               <number>18</number>
+              </property>
+              <property name="bottomMargin">
+               <number>14</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="statStrongCount">
+                <property name="styleSheet">
+                 <string notr="true">color: #4CAF50; font-size: 24px; font-weight: bold; background: transparent; border: none;</string>
+                </property>
+                <property name="text">
+                 <string>0</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="statStrongLabel">
+                <property name="styleSheet">
+                 <string notr="true">color: #8892A4; font-size: 12px; background: transparent; border: none; font-family: &quot;Segoe UI&quot;;</string>
+                </property>
+                <property name="text">
+                 <string>Strong Passwords</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout">
+              <property name="spacing">
+               <number>4</number>
+              </property>
+              <property name="leftMargin">
+               <number>18</number>
+              </property>
+              <property name="topMargin">
+               <number>14</number>
+              </property>
+              <property name="rightMargin">
+               <number>18</number>
+              </property>
+              <property name="bottomMargin">
+               <number>14</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="statWeakCount">
+                <property name="styleSheet">
+                 <string notr="true">color: #F7C54F; font-size: 24px; font-weight: bold; background: transparent; border: none;</string>
+                </property>
+                <property name="text">
+                 <string>0</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="statWeakLabel">
+                <property name="styleSheet">
+                 <string notr="true">color: #8892A4; font-size: 12px; background: transparent; border: none; font-family: &quot;Segoe UI&quot;;</string>
+                </property>
+                <property name="text">
+                 <string>Weak Passwords</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="searchInput">
+            <property name="styleSheet">
+             <string notr="true">
+QLineEdit {
+    background-color: #1E2536; color: #FFFFFF;
+    border: 1px solid #2A3244; border-radius: 8px;
+    padding: 10px 16px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
+}
+QLineEdit:focus { border: 1px solid #4F8EF7; }
+              </string>
+            </property>
+            <property name="placeholderText">
+             <string>Search passwords by website, username...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="passwordTable">
+            <property name="styleSheet">
+             <string notr="true">
+                QTableWidget {
+                    background-color: #1E2536; color: #FFFFFF;
+                    border: 1px solid #2A3244; border-radius: 10px;
+                    gridline-color: #2A3244; font-family: &quot;Segoe UI&quot;; font-size: 13px;
+                    outline: none;
+                }
+                QTableWidget::item {
+                    padding: 12px 16px; border-bottom: 1px solid #2A3244;
+                }
+                QTableWidget::item:selected {
+                    background-color: rgba(79, 142, 247, 0.18); color: #FFFFFF;
+                }
+                QHeaderView::section {
+                    background-color: #151C2E; color: #8892A4;
+                    padding: 12px 16px; border: none;
+                    border-bottom: 2px solid #2A3244;
+                    font-weight: bold; font-size: 11px; font-family: &quot;Segoe UI&quot;;
+                }
+              </string>
+            </property>
+            <property name="editTriggers">
+             <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+            </property>
+            <property name="alternatingRowColors">
+             <bool>false</bool>
+            </property>
+            <property name="selectionMode">
+             <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+            </property>
+            <property name="showGrid">
+             <bool>false</bool>
+            </property>
+            <property name="columnCount">
+             <number>4</number>
+            </property>
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <column>
+             <property name="text">
+              <string>WEBSITE</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>USERNAME</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>PASSWORD</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>NOTES</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="addPasswordPage">
+       <property name="styleSheet">
+        <string notr="true">QWidget#addPasswordPage { background-color: #0F1421; }</string>
+       </property>
+       <layout class="QHBoxLayout" name="addMainLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <spacer name="addLeftSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QScrollArea" name="addScrollArea">
+          <property name="styleSheet">
+           <string notr="true">
+                QScrollArea { background: transparent; border: none; }
+                QScrollArea &gt; QWidget &gt; QWidget { background: transparent; }
+           </string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Shape::NoFrame</enum>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="addScrollContents">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>218</width>
+             <height>659</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="addScrollLayout">
+            <property name="spacing">
+             <number>14</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>36</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>36</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="backToDashboardBtn">
+              <property name="styleSheet">
+               <string notr="true">
+                    QPushButton {
+                        background-color: transparent; color: #4F8EF7; border: none;
+                        font-size: 13px; font-family: &quot;Segoe UI&quot;; text-align: left; padding: 4px 0;
+                    }
+                    QPushButton:hover { color: #FFFFFF; }
+               </string>
+              </property>
+              <property name="text">
+               <string>&lt;- Back to Dashboard</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="addPwdTitle">
+              <property name="styleSheet">
+               <string notr="true">
+                color: #FFFFFF; font-size: 24px; font-weight: bold;
+                font-family: &quot;Segoe UI&quot;; background: transparent;
+               </string>
+              </property>
+              <property name="text">
+               <string>Add New Password</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="formCardLayout">
+              <property name="spacing">
+               <number>10</number>
+              </property>
+              <property name="leftMargin">
+               <number>28</number>
+              </property>
+              <property name="topMargin">
+               <number>26</number>
+              </property>
+              <property name="rightMargin">
+               <number>28</number>
+              </property>
+              <property name="bottomMargin">
+               <number>26</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="websiteLbl">
+                <property name="styleSheet">
+                 <string notr="true">color: #C0C8D8; font-size: 11px; font-weight: bold; background: transparent; font-family: &quot;Segoe UI&quot;; margin-bottom: 2px;</string>
+                </property>
+                <property name="text">
+                 <string>Website / Service Name</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="websiteInput">
+                <property name="styleSheet">
+                 <string notr="true">
+                    QLineEdit {
+                        background-color: #252D40; color: #FFFFFF;
+                        border: 1px solid #2A3244; border-radius: 8px;
+                        padding: 10px 14px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
+                    }
+                    QLineEdit:focus { border: 1px solid #4F8EF7; }
+                  </string>
+                </property>
+                <property name="placeholderText">
+                 <string>e.g. Google, Facebook, Netflix...</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="urlLbl">
+                <property name="styleSheet">
+                 <string notr="true">color: #C0C8D8; font-size: 11px; font-weight: bold; background: transparent; font-family: &quot;Segoe UI&quot;; margin-bottom: 2px;</string>
+                </property>
+                <property name="text">
+                 <string>Website URL (optional)</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="urlInput">
+                <property name="styleSheet">
+                 <string notr="true">
+                    QLineEdit {
+                        background-color: #252D40; color: #FFFFFF;
+                        border: 1px solid #2A3244; border-radius: 8px;
+                        padding: 10px 14px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
+                    }
+                    QLineEdit:focus { border: 1px solid #4F8EF7; }
+                  </string>
+                </property>
+                <property name="placeholderText">
+                 <string>https://example.com</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="usernameFormLbl">
+                <property name="styleSheet">
+                 <string notr="true">color: #C0C8D8; font-size: 11px; font-weight: bold; background: transparent; font-family: &quot;Segoe UI&quot;; margin-bottom: 2px;</string>
+                </property>
+                <property name="text">
+                 <string>Username / Email</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="usernameFormInput">
+                <property name="styleSheet">
+                 <string notr="true">
+QLineEdit {
+    background-color: #252D40; color: #FFFFFF;
+    border: 1px solid #2A3244; border-radius: 8px;
+    padding: 10px 14px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
+}
+QLineEdit:focus { border: 1px solid #4F8EF7; }
+                  </string>
+                </property>
+                <property name="placeholderText">
+                 <string>Enter username or email</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="passwordFormLbl">
+                <property name="styleSheet">
+                 <string notr="true">color: #C0C8D8; font-size: 11px; font-weight: bold; background: transparent; font-family: &quot;Segoe UI&quot;; margin-bottom: 2px;</string>
+                </property>
+                <property name="text">
+                 <string>Password</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="passwordFormInput">
+                <property name="styleSheet">
+                 <string notr="true">
+QLineEdit {
+    background-color: #252D40; color: #FFFFFF;
+    border: 1px solid #2A3244; border-radius: 8px;
+    padding: 10px 14px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
+}
+QLineEdit:focus { border: 1px solid #4F8EF7; }
+                  </string>
+                </property>
+                <property name="echoMode">
+                 <enum>QLineEdit::EchoMode::Password</enum>
+                </property>
+                <property name="placeholderText">
+                 <string>Enter password</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="notesLbl">
+                <property name="styleSheet">
+                 <string notr="true">color: #C0C8D8; font-size: 11px; font-weight: bold; background: transparent; font-family: &quot;Segoe UI&quot;; margin-bottom: 2px;</string>
+                </property>
+                <property name="text">
+                 <string>Notes (optional)</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QTextEdit" name="notesInput">
+                <property name="styleSheet">
+                 <string notr="true">
+                    QTextEdit {
+                        background-color: #252D40; color: #FFFFFF;
+                        border: 1px solid #2A3244; border-radius: 8px;
+                        padding: 10px 14px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
+                    }
+                    QTextEdit:focus { border: 1px solid #4F8EF7; }
+                  </string>
+                </property>
+                <property name="placeholderText">
+                 <string>Any additional notes...</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="addBtnsLayout">
+                <property name="spacing">
+                 <number>12</number>
+                </property>
+                <property name="topMargin">
+                 <number>6</number>
+                </property>
+                <item>
+                 <widget class="QPushButton" name="cancelAddBtn">
+                  <property name="styleSheet">
+                   <string notr="true">
+                    QPushButton {
+                        background-color: transparent; color: #8892A4;
+                        border: 1px solid #3A4255; border-radius: 8px;
+                        font-size: 14px; font-family: &quot;Segoe UI&quot;;
+                    }
+                    QPushButton:hover { background-color: #252D40; color: #FFFFFF; border-color: #4A5568; }
+                    </string>
+                  </property>
+                  <property name="text">
+                   <string>Cancel</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="savePasswordBtn">
+                  <property name="styleSheet">
+                   <string notr="true">
+                        QPushButton {
+                            background-color: #4F8EF7; color: #FFFFFF; border: none;
+                            border-radius: 8px; font-size: 14px; font-weight: bold; font-family: &quot;Segoe UI&quot;;
+                        }
+                        QPushButton:hover { background-color: #3A7BD5; }
+                        QPushButton:pressed { background-color: #2E6BC4; }
+                    </string>
+                  </property>
+                  <property name="text">
+                   <string>Save Password</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+        <item>
+         <spacer name="addRightSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="settingsPage">
+       <property name="styleSheet">
+        <string notr="true">QWidget#settingsPage { background-color: #0F1421; }</string>
+       </property>
+       <layout class="QHBoxLayout" name="settingsMainLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <spacer name="settingsLeftSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QScrollArea" name="settingsScrollArea">
+          <property name="styleSheet">
+           <string notr="true">
+                QScrollArea { background: transparent; border: none; }
+                QScrollArea &gt; QWidget &gt; QWidget { background: transparent; }
+           </string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Shape::NoFrame</enum>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="settingsScrollContents">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>270</width>
+             <height>619</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="settingsScrollLayout">
+            <property name="spacing">
+             <number>16</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>36</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>36</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="settingsBackBtn">
+              <property name="styleSheet">
+               <string notr="true">
+                    QPushButton {
+                        background-color: transparent; color: #4F8EF7; border: none;
+                        font-size: 13px; font-family: &quot;Segoe UI&quot;; text-align: left; padding: 4px 0;
+                    }
+                    QPushButton:hover { color: #FFFFFF; }
+               </string>
+              </property>
+              <property name="text">
+               <string>&lt;- Back to Dashboard</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="settingsTitleLabel">
+              <property name="styleSheet">
+               <string notr="true">
+                color: #FFFFFF; font-size: 24px; font-weight: bold;
+                font-family: &quot;Segoe UI&quot;; background: transparent;
+               </string>
+              </property>
+              <property name="text">
+               <string>Settings</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QVBoxLayout">
+              <property name="spacing">
+               <number>14</number>
+              </property>
+              <property name="leftMargin">
+               <number>24</number>
+              </property>
+              <property name="topMargin">
+               <number>20</number>
+              </property>
+              <property name="rightMargin">
+               <number>24</number>
+              </property>
+              <property name="bottomMargin">
+               <number>20</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="appearanceSectionTitle">
+                <property name="styleSheet">
+                 <string notr="true">color: #FFFFFF; font-size: 14px; font-weight: bold; font-family: &quot;Segoe UI&quot;; background: transparent;</string>
+                </property>
+                <property name="text">
+                 <string>Appearance</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="divAppearance">
+                <property name="styleSheet">
+                 <string notr="true">color: #2A3244;</string>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::Shape::HLine</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Shadow::Plain</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout">
+                <item>
+                 <widget class="QLabel" name="darkModeSettingLabel">
+                  <property name="styleSheet">
+                   <string notr="true">color: #C0C8D8; font-size: 13px; font-family: &quot;Segoe UI&quot;; background: transparent;</string>
+                  </property>
+                  <property name="text">
+                   <string>Dark Mode</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer>
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="darkModeCheckBox">
+                  <property name="styleSheet">
+                   <string notr="true">
+                        QCheckBox::indicator {
+                            width: 20px; height: 20px;
+                            border: 2px solid #3A4255; border-radius: 4px; background-color: #252D40;
+                        }
+                        QCheckBox::indicator:checked {
+                            background-color: #4F8EF7; border-color: #4F8EF7;
+                        }
+                    </string>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout">
+              <property name="spacing">
+               <number>14</number>
+              </property>
+              <property name="leftMargin">
+               <number>24</number>
+              </property>
+              <property name="topMargin">
+               <number>20</number>
+              </property>
+              <property name="rightMargin">
+               <number>24</number>
+              </property>
+              <property name="bottomMargin">
+               <number>20</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="securitySectionTitle">
+                <property name="styleSheet">
+                 <string notr="true">color: #FFFFFF; font-size: 14px; font-weight: bold; font-family: &quot;Segoe UI&quot;; background: transparent;</string>
+                </property>
+                <property name="text">
+                 <string>Security</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="divSecurity1">
+                <property name="styleSheet">
+                 <string notr="true">color: #2A3244;</string>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::Shape::HLine</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Shadow::Plain</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout">
+                <item>
+                 <layout class="QVBoxLayout">
+                  <property name="spacing">
+                   <number>3</number>
+                  </property>
+                  <item>
+                   <widget class="QLabel" name="autoLockLabel">
+                    <property name="styleSheet">
+                     <string notr="true">color: #C0C8D8; font-size: 13px; font-family: &quot;Segoe UI&quot;; background: transparent;</string>
+                    </property>
+                    <property name="text">
+                     <string>Auto-Lock on Idle</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="autoLockDesc">
+                    <property name="styleSheet">
+                     <string notr="true">color: #6B7A99; font-size: 11px; font-family: &quot;Segoe UI&quot;; background: transparent;</string>
+                    </property>
+                    <property name="text">
+                     <string>Lock vault after a period of inactivity</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <spacer>
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="autoLockCheckBox">
+                  <property name="styleSheet">
+                   <string notr="true">
+                        QCheckBox::indicator {
+                            width: 20px; height: 20px;
+                            border: 2px solid #3A4255; border-radius: 4px; background-color: #252D40;
+                        }
+                        QCheckBox::indicator:checked {
+                            background-color: #4F8EF7; border-color: #4F8EF7;
+                        }
+                    </string>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QFrame" name="divSecurity2">
+                <property name="styleSheet">
+                 <string notr="true">color: #2A3244;</string>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::Shape::HLine</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Shadow::Plain</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="changeMasterPwdBtn">
+                <property name="styleSheet">
+                 <string notr="true">
+                    QPushButton {
+                        background-color: transparent; color: #4F8EF7;
+                        border: 1px solid #4F8EF7; border-radius: 8px;
+                        font-size: 13px; font-family: &quot;Segoe UI&quot;;
+                    }
+                    QPushButton:hover { background-color: rgba(79,142,247,0.12); }
+                  </string>
+                </property>
+                <property name="text">
+                 <string>Change Master Password</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout">
+              <property name="spacing">
+               <number>14</number>
+              </property>
+              <property name="leftMargin">
+               <number>24</number>
+              </property>
+              <property name="topMargin">
+               <number>20</number>
+              </property>
+              <property name="rightMargin">
+               <number>24</number>
+              </property>
+              <property name="bottomMargin">
+               <number>20</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="aboutSectionTitle">
+                <property name="styleSheet">
+                 <string notr="true">color: #FFFFFF; font-size: 14px; font-weight: bold; font-family: &quot;Segoe UI&quot;; background: transparent;</string>
+                </property>
+                <property name="text">
+                 <string>About</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="divAbout">
+                <property name="styleSheet">
+                 <string notr="true">color: #2A3244;</string>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::Shape::HLine</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Shadow::Plain</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout">
+                <item>
+                 <widget class="QLabel" name="versionLabel">
+                  <property name="styleSheet">
+                   <string notr="true">color: #C0C8D8; font-size: 13px; font-family: &quot;Segoe UI&quot;; background: transparent;</string>
+                  </property>
+                  <property name="text">
+                   <string>Version</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer>
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="versionValue">
+                  <property name="styleSheet">
+                   <string notr="true">color: #6B7A99; font-size: 13px; font-family: &quot;Segoe UI&quot;; background: transparent;</string>
+                  </property>
+                  <property name="text">
+                   <string>1.0.0</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <spacer name="settingsBottomSpacer">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+        <item>
+         <spacer name="settingsRightSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="registerPage">
+       <property name="styleSheet">
+        <string notr="true">
+
+        QWidget#registerPage {
+            background-color: #0F1421;
+        }
+
+        QFrame#registerCard {
+            background-color: #1A2235;
+            border-radius: 18px;
+            border: 1px solid #2A3244;
+        }
+
+        QLabel#registerTitle {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            font-family: &quot;Segoe UI&quot;;
+        }
+
+        QLabel#registerSubtitle {
+            color: #AAB3C5;
+            font-size: 12px;
+            font-family: &quot;Segoe UI&quot;;
+        }
+
+        QLineEdit {
+            background-color: #252D40;
+            color: white;
+            border: 1px solid #2A3244;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-family: &quot;Segoe UI&quot;;
+        }
+
+        QLineEdit:focus {
+            border: 1px solid #4F8EF7;
+        }
+
+        QPushButton#registerBtn {
+            background-color: #4F8EF7;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: &quot;Segoe UI&quot;;
+        }
+
+        QPushButton#registerBtn:hover {
+            background-color: #3A7BD5;
+        }
+
+        QPushButton#registerBtn:pressed {
+            background-color: #2E6BC4;
+        }
+
+        QPushButton#loginRedirectBtn {
+            background: transparent;
+            color: #4F8EF7;
+            border: none;
+            font-size: 12px;
+            font-family: &quot;Segoe UI&quot;;
+        }
+
+        QPushButton#loginRedirectBtn:hover {
+            color: #7DB2FF;
+        }
+
+        QCheckBox {
+            color: #C0C8D8;
+            font-size: 12px;
+            font-family: &quot;Segoe UI&quot;;
+        }
+
+        </string>
+       </property>
+       <layout class="QHBoxLayout" name="registerMainLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <spacer name="leftSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>200</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QFrame" name="registerCard">
+          <property name="minimumSize">
+           <size>
+            <width>420</width>
+            <height>600</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>420</width>
+            <height>600</height>
+           </size>
+          </property>
+          <layout class="QVBoxLayout" name="registerCardLayout">
+           <property name="spacing">
+            <number>14</number>
+           </property>
+           <property name="leftMargin">
+            <number>30</number>
+           </property>
+           <property name="topMargin">
+            <number>35</number>
+           </property>
+           <property name="rightMargin">
+            <number>30</number>
+           </property>
+           <property name="bottomMargin">
+            <number>35</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="registerTitle">
+             <property name="text">
+              <string>CREATE ACCOUNT</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="registerSubtitle">
+             <property name="text">
+              <string>Secure Password Manager</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="topSpacer">
+             <property name="orientation">
+              <enum>Qt::Orientation::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>15</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="fullNameInput">
+             <property name="placeholderText">
+              <string>Full Name</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="usernameInput">
+             <property name="placeholderText">
+              <string>Username</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="emailInput">
+             <property name="placeholderText">
+              <string>Email Address</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="passwordInput">
+             <property name="echoMode">
+              <enum>QLineEdit::EchoMode::Password</enum>
+             </property>
+             <property name="placeholderText">
+              <string>Password</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="confirmPasswordInput">
+             <property name="echoMode">
+              <enum>QLineEdit::EchoMode::Password</enum>
+             </property>
+             <property name="placeholderText">
+              <string>Confirm Password</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="showPasswordCheck">
+             <property name="text">
+              <string>Show Password</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="registerBtn">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>45</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Create Account</string>
+             </property>
+            </widget>
+           </item>
+           
+           <item>
+            <widget class="QPushButton" name="loginRedirectBtn">
+             <property name="text">
+              <string>Already have an account? Login</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer name="rightSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>200</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1100</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
