@@ -24,24 +24,6 @@ HashVault::HashVault(QWidget *parent)
     else
         QMessageBox::warning(this,"Database Error",db.lastError().text());
 
-
-
-    // add dummy entries in dashboard table 
-    ui.passwordTable->horizontalHeader()->setDefaultSectionSize(180);
-    ui.passwordTable->setRowCount(3);
-
-    ui.passwordTable->setItem(0, 0, new QTableWidgetItem("Google"));
-    ui.passwordTable->setItem(0, 1, new QTableWidgetItem("sanket@gmail.com"));
-    ui.passwordTable->setItem(0, 2, new QTableWidgetItem("********"));
-
-    ui.passwordTable->setItem(1, 0, new QTableWidgetItem("GitHub"));
-    ui.passwordTable->setItem(1, 1, new QTableWidgetItem("sanketdev"));
-    ui.passwordTable->setItem(1, 2, new QTableWidgetItem("********"));
-
-    ui.passwordTable->setItem(2, 0, new QTableWidgetItem("LinkedIn"));
-    ui.passwordTable->setItem(2, 1, new QTableWidgetItem("sanket.patil"));
-    ui.passwordTable->setItem(2, 2, new QTableWidgetItem("********"));
-
     
     connect(ui.navSettings, &QPushButton::clicked, this, &HashVault::openSettings);
     connect(ui.addPasswordBtn, &QPushButton::clicked, this, &HashVault::openAddPasswordPage);
@@ -54,8 +36,10 @@ HashVault::HashVault(QWidget *parent)
     // Redirect back to Login Page
     connect(ui.loginRedirectBtn, &QPushButton::clicked, this, &HashVault::openLoginPage);
 
-	connect(ui.registerBtn, &QPushButton::clicked, this, &HashVault::registerUser);     // adding to database
-	connect(ui.loginButton, &QPushButton::clicked, this, &HashVault::loginUser);        // validating user credentials and then redirecting to dashboard
+	connect(ui.registerBtn, &QPushButton::clicked, this, &HashVault::registerUser);                 // adding to database
+	connect(ui.loginButton, &QPushButton::clicked, this, &HashVault::loginUser);                    // validating user credentials and then redirecting to dashboard
+
+	connect(ui.savePasswordBtn, &QPushButton::clicked, this, &HashVault::addPassword);              // adding password to database and then refreshing the dashboard table to show the newly added password
 
 }
 
@@ -152,10 +136,77 @@ void HashVault::loginUser() {
 	query.addBindValue(password);
 
 	if (query.exec() && query.next()) {
+		currentUserId = query.value("id").toInt();          // store the logged-in user's ID for later use like fetching user-specific passwords
+
 		QMessageBox::information(this, "Success", "Login successful!");
+        
+        loadPasswords();
+
 		ui.stackedWidget->setCurrentWidget(ui.dashboardPage);               // Redirect to dashboard page after successful login
 	}
 	else {
 		QMessageBox::critical(this, "Error", "Invalid username or password");
 	}
+}
+
+void HashVault::addPassword() {
+    QString website = ui.websiteInput->text();
+    //QString url = ui.urlInput->text();
+    QString username = ui.usernameFormInput->text();
+    QString password = ui.passwordFormInput->text();
+	QString notes = ui.notesInput->toPlainText();
+
+    if (website.isEmpty() || username.isEmpty() || password.isEmpty())
+    {
+        QMessageBox::warning(this, "Error", "Please fill all fields");
+        return;
+    }
+
+    QSqlQuery query;
+	query.prepare("insert into passwords (website, username, password, notes, user_id) values (?, ?, ?, ?, ?)");
+
+	query.addBindValue(website);
+	query.addBindValue(username);
+	query.addBindValue(password); 
+    query.addBindValue(notes);
+	query.addBindValue(currentUserId); // associate the password entry with the logged-in user
+
+    if (query.exec()) {
+		QMessageBox::information(this, "Success", "Password added successfully!");
+
+        ui.websiteInput->clear();
+		ui.usernameFormInput->clear();
+		ui.passwordFormInput->clear();
+		ui.notesInput->clear();
+
+        loadPasswords();
+		ui.stackedWidget->setCurrentWidget(ui.dashboardPage); // Redirect back to dashboard after adding password
+    }
+    else {
+        QMessageBox::critical(this, "Error", "Failed to add password: " + query.lastError().text());
+    }
+}
+
+void HashVault::loadPasswords() {
+	ui.passwordTable->setRowCount(0); // Clear existing rows
+
+    QSqlQuery query;
+
+	query.prepare("SELECT * FROM passwords WHERE user_id = ?");
+	query.addBindValue(currentUserId);
+
+    if (query.exec()) {
+		int row = 0;
+
+        while (query.next()) {
+			ui.passwordTable->insertRow(row);
+
+			ui.passwordTable->setItem(row, 0, new QTableWidgetItem(query.value(1).toString())); // value at 1(column no.) is website in database
+			ui.passwordTable->setItem(row, 1, new QTableWidgetItem(query.value(2).toString())); // username
+			ui.passwordTable->setItem(row, 2, new QTableWidgetItem(query.value(3).toString())); // password
+			ui.passwordTable->setItem(row, 3, new QTableWidgetItem(query.value(6).toString())); // notes
+
+			row++;
+        }
+    }
 }

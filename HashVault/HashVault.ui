@@ -19,9 +19,7 @@
             background-color: #0F1421;
         }
 
-        <!-- Adding Global CSS -->
-
-        <!-- GLOBAL BUTTON STYLE  -->
+        
         QPushButton {
             background-color: #4F8EF7;
             color: #FFFFFF;
@@ -29,7 +27,7 @@
             border-radius: 8px;
             font-size: 13px;
             min-height: 12px;
-            font-family: "Segoe UI";
+            font-family: &quot;Segoe UI&quot;;
             padding: 10px 16px;
         }
 
@@ -41,7 +39,7 @@
             background-color: #2E6BC4;
         }
 
-        <!--  GLOBAL INPUT STYLE -->
+        
         QLineEdit,
         QTextEdit {
             background-color: #252D40;
@@ -50,7 +48,7 @@
             border-radius: 8px;
             padding: 10px 14px;
             font-size: 13px;
-            font-family: "Segoe UI";
+            font-family: &quot;Segoe UI&quot;;
         }
 
         QLineEdit:focus,
@@ -58,14 +56,14 @@
             border: 1px solid #4F8EF7;
         }
 
-        <!-- GLOBAL LABEL STYLE -->
+        
         QLabel {
             color: #C0C8D8;
-            font-family: "Segoe UI";
+            font-family: &quot;Segoe UI&quot;;
             background: transparent;
         }
 
-        <!-- End of Global CSS -->
+        
 
 
         QScrollBar:vertical {
@@ -119,8 +117,6 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
-
-      <!-- Login Page -->
       <widget class="QWidget" name="loginPage">
        <property name="styleSheet">
         <string notr="true">QWidget#LoginPage { background-color: #0F1421; }</string>
@@ -445,33 +441,36 @@
            </spacer>
           </item>
           <item>
-            <widget class="QCheckBox" name="showPasswordCheck">
-             <property name="text">
-              <string>Show Password</string>
-             </property>
-            </widget>
-           </item>
-           <!-- Adding SPACER -->
-            <item>
-            <spacer name="loginSectionGap">
+           <widget class="QCheckBox" name="showPasswordCheck">
+            <property name="text">
+             <string>Show Password</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="loginSectionGap">
             <property name="orientation">
-            <enum>Qt::Orientation::Vertical</enum>
+             <enum>Qt::Orientation::Vertical</enum>
             </property>
-
             <property name="sizeType">
-            <enum>QSizePolicy::Policy::Fixed</enum>
+             <enum>QSizePolicy::Policy::Fixed</enum>
             </property>
-
             <property name="sizeHint" stdset="0">
-            <size>
-                <width>20</width>
-                <height>18</height>
-            </size>
+             <size>
+              <width>20</width>
+              <height>18</height>
+             </size>
             </property>
-            </spacer>
-            </item>
+           </spacer>
+          </item>
           <item>
            <widget class="QPushButton" name="loginButton">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>32</height>
+             </size>
+            </property>
             <property name="styleSheet">
              <string notr="true">
                 QPushButton {
@@ -482,38 +481,27 @@
                 QPushButton:pressed { background-color: #2E6BC4; }
               </string>
             </property>
-            <property name="minimumSize">
-                <size>
-                    <width>0</width>
-                    <height>45</height>
-                </size>
-            </property>
             <property name="text">
              <string>Login</string>
             </property>
            </widget>
           </item>
-
-          <!-- Adding SPACER -->
-            <item>
-            <spacer name="loginSectionGap">
+          <item>
+           <spacer name="loginSectionGap">
             <property name="orientation">
-            <enum>Qt::Orientation::Vertical</enum>
+             <enum>Qt::Orientation::Vertical</enum>
             </property>
-
             <property name="sizeType">
-            <enum>QSizePolicy::Policy::Fixed</enum>
+             <enum>QSizePolicy::Policy::Fixed</enum>
             </property>
-
             <property name="sizeHint" stdset="0">
-            <size>
-                <width>20</width>
-                <height>18</height>
-            </size>
+             <size>
+              <width>20</width>
+              <height>18</height>
+             </size>
             </property>
-            </spacer>
-            </item>
-
+           </spacer>
+          </item>
           <item>
            <widget class="QPushButton" name="registerRedirectBtn">
             <property name="styleSheet">
@@ -982,12 +970,12 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
            <widget class="QLineEdit" name="searchInput">
             <property name="styleSheet">
              <string notr="true">
-QLineEdit {
-    background-color: #1E2536; color: #FFFFFF;
-    border: 1px solid #2A3244; border-radius: 8px;
-    padding: 10px 16px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
-}
-QLineEdit:focus { border: 1px solid #4F8EF7; }
+                QLineEdit {
+                    background-color: #1E2536; color: #FFFFFF;
+                    border: 1px solid #2A3244; border-radius: 8px;
+                    padding: 10px 16px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
+                }
+                QLineEdit:focus { border: 1px solid #4F8EF7; }
               </string>
             </property>
             <property name="placeholderText">
@@ -1121,8 +1109,8 @@ QLineEdit:focus { border: 1px solid #4F8EF7; }
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>218</width>
-             <height>659</height>
+             <width>274</width>
+             <height>588</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="addScrollLayout">
@@ -1193,7 +1181,7 @@ QLineEdit:focus { border: 1px solid #4F8EF7; }
                  <string notr="true">color: #C0C8D8; font-size: 11px; font-weight: bold; background: transparent; font-family: &quot;Segoe UI&quot;; margin-bottom: 2px;</string>
                 </property>
                 <property name="text">
-                 <string>Website / Service Name</string>
+                 <string>Website</string>
                 </property>
                </widget>
               </item>
@@ -1210,22 +1198,22 @@ QLineEdit:focus { border: 1px solid #4F8EF7; }
                   </string>
                 </property>
                 <property name="placeholderText">
-                 <string>e.g. Google, Facebook, Netflix...</string>
+                 <string>e.g. google.com, facebook.com, netflix...</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QLabel" name="urlLbl">
+               <widget class="QLabel" name="usernameFormLbl">
                 <property name="styleSheet">
                  <string notr="true">color: #C0C8D8; font-size: 11px; font-weight: bold; background: transparent; font-family: &quot;Segoe UI&quot;; margin-bottom: 2px;</string>
                 </property>
                 <property name="text">
-                 <string>Website URL (optional)</string>
+                 <string>Username</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="urlInput">
+               <widget class="QLineEdit" name="usernameFormInput">
                 <property name="styleSheet">
                  <string notr="true">
                     QLineEdit {
@@ -1237,34 +1225,7 @@ QLineEdit:focus { border: 1px solid #4F8EF7; }
                   </string>
                 </property>
                 <property name="placeholderText">
-                 <string>https://example.com</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="usernameFormLbl">
-                <property name="styleSheet">
-                 <string notr="true">color: #C0C8D8; font-size: 11px; font-weight: bold; background: transparent; font-family: &quot;Segoe UI&quot;; margin-bottom: 2px;</string>
-                </property>
-                <property name="text">
-                 <string>Username / Email</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="usernameFormInput">
-                <property name="styleSheet">
-                 <string notr="true">
-QLineEdit {
-    background-color: #252D40; color: #FFFFFF;
-    border: 1px solid #2A3244; border-radius: 8px;
-    padding: 10px 14px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
-}
-QLineEdit:focus { border: 1px solid #4F8EF7; }
-                  </string>
-                </property>
-                <property name="placeholderText">
-                 <string>Enter username or email</string>
+                 <string>Enter username</string>
                 </property>
                </widget>
               </item>
@@ -1282,12 +1243,12 @@ QLineEdit:focus { border: 1px solid #4F8EF7; }
                <widget class="QLineEdit" name="passwordFormInput">
                 <property name="styleSheet">
                  <string notr="true">
-QLineEdit {
-    background-color: #252D40; color: #FFFFFF;
-    border: 1px solid #2A3244; border-radius: 8px;
-    padding: 10px 14px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
-}
-QLineEdit:focus { border: 1px solid #4F8EF7; }
+                    QLineEdit {
+                        background-color: #252D40; color: #FFFFFF;
+                        border: 1px solid #2A3244; border-radius: 8px;
+                        padding: 10px 14px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
+                    }
+                    QLineEdit:focus { border: 1px solid #4F8EF7; }
                   </string>
                 </property>
                 <property name="echoMode">
@@ -1443,7 +1404,7 @@ QLineEdit:focus { border: 1px solid #4F8EF7; }
              <x>0</x>
              <y>0</y>
              <width>270</width>
-             <height>619</height>
+             <height>627</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="settingsScrollLayout">
@@ -2051,7 +2012,7 @@ QLineEdit:focus { border: 1px solid #4F8EF7; }
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>45</height>
+               <height>36</height>
               </size>
              </property>
              <property name="text">
@@ -2059,7 +2020,6 @@ QLineEdit:focus { border: 1px solid #4F8EF7; }
              </property>
             </widget>
            </item>
-           
            <item>
             <widget class="QPushButton" name="loginRedirectBtn">
              <property name="text">

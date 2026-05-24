@@ -23,9 +23,12 @@ private slots:
     void openLoginPage();
     void registerUser();
     void loginUser();
+    void addPassword();
+    void loadPasswords();
 
 private:
     Ui::HashVaultClass ui;
-	QSqlDatabase db;        // create global database object to be used across the application
+	QSqlDatabase db;                // create global database object to be used across the application
+    int currentUserId = -1;         // store the logged-in user's id
 };
 
