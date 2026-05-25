@@ -36,7 +36,7 @@ HashVault::HashVault(QWidget *parent)
     
     connect(ui.navSettings, &QPushButton::clicked, this, &HashVault::openSettings);
     connect(ui.addPasswordBtn, &QPushButton::clicked, this, &HashVault::openAddPasswordPage);
-    connect(ui.backToDashboardBtn, &QPushButton::clicked, this, &HashVault::backToDashboardFromAddPage);
+    connect(ui.cancelAddBtn, &QPushButton::clicked,this, &HashVault::cancelPasswordEditing);
     connect(ui.settingsBackBtn, &QPushButton::clicked, this, &HashVault::backToDashboardFromSettings);
 
     // Redirect to Register Page
@@ -59,10 +59,17 @@ HashVault::~HashVault()
 
 void HashVault::openSettings()                  { ui.stackedWidget->setCurrentWidget(ui.settingsPage); }
 void HashVault::openAddPasswordPage()           { ui.stackedWidget->setCurrentWidget(ui.addPasswordPage); }
-void HashVault::backToDashboardFromAddPage()    { ui.stackedWidget->setCurrentWidget(ui.dashboardPage); }
 void HashVault::backToDashboardFromSettings()   { ui.stackedWidget->setCurrentWidget(ui.dashboardPage); }
 void HashVault::openRegisterPage()              { ui.stackedWidget->setCurrentWidget(ui.registerPage); }
 void HashVault::openLoginPage()                 { ui.stackedWidget->setCurrentWidget(ui.loginPage); }
+void HashVault::cancelPasswordEditing()
+{
+    clearPasswordInputs();
+
+    ui.stackedWidget->setCurrentWidget(
+        ui.dashboardPage
+    );
+}
 
 
 
@@ -91,7 +98,7 @@ void HashVault::registerUser() {
     QSqlQuery query;
 	query.prepare("INSERT INTO users (fullname, username, email, password) VALUES (?, ?, ?, ?)");
 
-    // giving error while executing query
+    // this is giving error while executing query (search later)
 	//query.bindValue(":fullname", fullname);
     //query.bindValue(":username", username);
 	//query.bindValue(":email", email);
@@ -157,24 +164,49 @@ void HashVault::addPassword() {
     }
 
     QSqlQuery query;
-	query.prepare("insert into passwords (website, username, password, notes, user_id) values (?, ?, ?, ?, ?)");
 
-	query.addBindValue(website);
-	query.addBindValue(username);
-	query.addBindValue(password); 
-    query.addBindValue(notes);
-	query.addBindValue(currentUserId); // associate the password entry with the logged-in user
+    // -1 means adding new entry
+    if (editingPasswordId == -1) {
+        query.prepare("insert into passwords (website, username, password, notes, user_id) values (?, ?, ?, ?, ?)");
+
+        query.addBindValue(website);
+        query.addBindValue(username);
+        query.addBindValue(password);
+        query.addBindValue(notes);
+        query.addBindValue(currentUserId); // associate the password entry with the logged-in user
+    }
+
+    // query for updating password 
+    else {
+        query.prepare(
+            "UPDATE passwords "
+            "SET website = ?, "
+            "username = ?, "
+            "password = ?, "
+            "notes = ? "
+            "WHERE id = ?"
+        );
+
+        query.addBindValue(website);
+        query.addBindValue(username);
+        query.addBindValue(password);
+        query.addBindValue(notes);
+        query.addBindValue(editingPasswordId);
+    }
+
 
     if (query.exec()) {
-		QMessageBox::information(this, "Success", "Password added successfully!");
+        QString successMessage = (editingPasswordId == -1) 
+            ? "Password added successfully!"
+            : "Password updated successfully!";
+		
+        QMessageBox::information(this, "Success", successMessage);
 
-        ui.websiteInput->clear();
-		ui.usernameFormInput->clear();
-		ui.passwordFormInput->clear();
-		ui.notesInput->clear();
+        clearPasswordInputs();
 
         loadPasswords();
-		ui.stackedWidget->setCurrentWidget(ui.dashboardPage); // Redirect back to dashboard after adding password
+		
+        ui.stackedWidget->setCurrentWidget(ui.dashboardPage); // Redirect back to dashboard after adding password
     }
     else {
         QMessageBox::critical(this, "Error", "Failed to add password: " + query.lastError().text());
@@ -186,7 +218,7 @@ void HashVault::loadPasswords() {
 
     QSqlQuery query;
 
-	query.prepare("SELECT * FROM passwords WHERE user_id = ?");
+	query.prepare("SELECT * FROM passwords WHERE user_id = ? ORDER BY id");
 	query.addBindValue(currentUserId);
 
     if (query.exec()) {
@@ -254,10 +286,17 @@ void HashVault::loadPasswords() {
             // adding to actions column
             ui.passwordTable->setCellWidget(row, 5, actionWidget); // 4 is the column number for actions, first column is hidden
 
+			
+            // connecting buttons for edit and delete functionality by passing passwordId of current password row
             int passwordId = query.value(0).toInt(); // get the id of the password entry from database to identify which entry to edit/delete when buttons are clicked
+
             connect(deleteBtn, &QPushButton::clicked, this, [=]() {
                 deletePassword(passwordId);
             });
+
+			connect(editBtn, &QPushButton::clicked, this, [=]() {
+                editPassword(passwordId);
+			});
 
 			row++;
         }
@@ -276,4 +315,32 @@ void HashVault::deletePassword(int id) {
     else {
 		QMessageBox::warning(this, "Error", query.lastError().text());
     }
+}
+
+void HashVault::editPassword(int id) {
+	editingPasswordId = id; // storing the id of the password entry being edited to identify which entry to update in database when save button is clicked
+
+	QSqlQuery query;
+	query.prepare("SELECT * FROM passwords WHERE id = ?");
+	query.addBindValue(id);
+
+	// set the current values of the password entry to the form inputs in add password page for editing
+    if (query.exec() && query.next())
+    {
+        ui.websiteInput->setText(query.value(1).toString());
+        ui.usernameFormInput->setText(query.value(2).toString());
+        ui.passwordFormInput->setText(query.value(3).toString());
+        ui.notesInput->setPlainText(query.value(6).toString());      // notes column in database is at 6th index
+
+        ui.stackedWidget->setCurrentWidget(ui.addPasswordPage);
+    }
+}
+
+void HashVault::clearPasswordInputs() {
+	ui.websiteInput->clear();
+	ui.usernameFormInput->clear();
+	ui.passwordFormInput->clear();
+	ui.notesInput->clear();
+
+    editingPasswordId = -1;         // reseat the editing mode
 }

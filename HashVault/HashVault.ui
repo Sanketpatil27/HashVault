@@ -1139,22 +1139,7 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
             <property name="bottomMargin">
              <number>36</number>
             </property>
-            <item>
-             <widget class="QPushButton" name="backToDashboardBtn">
-              <property name="styleSheet">
-               <string notr="true">
-                    QPushButton {
-                        background-color: transparent; color: #4F8EF7; border: none;
-                        font-size: 13px; font-family: &quot;Segoe UI&quot;; text-align: left; padding: 4px 0;
-                    }
-                    QPushButton:hover { color: #FFFFFF; }
-               </string>
-              </property>
-              <property name="text">
-               <string>&lt;- Back to Dashboard</string>
-              </property>
-             </widget>
-            </item>
+
             <item>
              <widget class="QLabel" name="addPwdTitle">
               <property name="styleSheet">
