@@ -250,6 +250,20 @@ void HashVault::loadPasswords() {
 }
 
 void HashVault::deletePassword(int id) {
+    QMessageBox::StandardButton reply;
+
+    reply = QMessageBox::question(
+        this,
+        "Delete Password",
+        "Are you sure you want to delete this password?",
+        QMessageBox::Yes | QMessageBox::No
+    );
+
+    // if user clicks NO then do nothing
+    if (reply == QMessageBox::No)
+        return;
+
+    // if user selected yes then prepare query for deleting the row
     QSqlQuery query;
 
 	query.prepare("DELETE FROM passwords WHERE id = ?");
