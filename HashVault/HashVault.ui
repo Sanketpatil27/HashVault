@@ -1023,7 +1023,7 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
              <bool>false</bool>
             </property>
             <property name="columnCount">
-             <number>4</number>
+             <number>6</number>
             </property>
             <attribute name="horizontalHeaderStretchLastSection">
              <bool>true</bool>
@@ -1031,6 +1031,11 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
             <attribute name="verticalHeaderVisible">
              <bool>false</bool>
             </attribute>
+            <column>
+             <property name="text">
+              <string>ID</string>
+             </property>
+            </column>
             <column>
              <property name="text">
               <string>WEBSITE</string>
@@ -1049,6 +1054,11 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
             <column>
              <property name="text">
               <string>NOTES</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>ACTIONS</string>
              </property>
             </column>
            </widget>

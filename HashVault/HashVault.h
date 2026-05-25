@@ -14,17 +14,22 @@ public:
 
 
 private slots:
+    // Navigation
     void openSettings();
-    //void backToDashboard();
     void openAddPasswordPage();
     void backToDashboardFromAddPage();
     void backToDashboardFromSettings();
     void openRegisterPage();
     void openLoginPage();
+
+    // Authentication 
     void registerUser();
     void loginUser();
+
+    // Password CRUD Operations
     void addPassword();
-    void loadPasswords();
+    void loadPasswords(); 
+    void deletePassword(int id);
 
 private:
     Ui::HashVaultClass ui;
