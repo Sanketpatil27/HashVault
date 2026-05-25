@@ -33,13 +33,36 @@ HashVault::HashVault(QWidget *parent)
     else
         QMessageBox::warning(this,"Database Error",db.lastError().text());
 
-    
+	// navigation connectors
     connect(ui.navSettings, &QPushButton::clicked, this, &HashVault::openSettings);
     connect(ui.addPasswordBtn, &QPushButton::clicked, this, &HashVault::openAddPasswordPage);
     connect(ui.cancelAddBtn, &QPushButton::clicked,this, &HashVault::cancelPasswordEditing);
     connect(ui.settingsBackBtn, &QPushButton::clicked, this, &HashVault::backToDashboardFromSettings);
     connect(ui.registerRedirectBtn, &QPushButton::clicked, this, &HashVault::openRegisterPage);         // Redirect to Register Page from login page
     connect(ui.loginRedirectBtn, &QPushButton::clicked, this, &HashVault::openLoginPage);               // Redirect back to Login Page from register page
+
+    // change password toggles
+	connect(ui.loginShowPasswordCheckBox, &QCheckBox::toggled, this, 
+        [=](bool checked) 
+        {
+		    togglePasswordVisibility(ui.loginPasswordInput, checked);
+	    }
+    );
+
+    connect(ui.registerShowPasswordCheckBox, &QCheckBox::toggled, this,
+        [=](bool checked)
+        {
+            togglePasswordVisibility(ui.registerPasswordInput, checked);
+            togglePasswordVisibility(ui.registerConfirmPasswordInput, checked);
+        }
+    );
+
+    connect(ui.showStoredPasswordCheckBox, &QCheckBox::toggled, this,
+        [=](bool checked)
+        {
+            togglePasswordVisibility(ui.passwordFormInput, checked);
+        }
+    );
 
     // auth connectors 
 	connect(ui.registerBtn, &QPushButton::clicked, this, &HashVault::registerUser);                 // adding to database
@@ -369,4 +392,12 @@ void HashVault::addPasswordRow(int row, const QSqlQuery& query)
     connect(editBtn, &QPushButton::clicked, this, [=]() {
         editPassword(passwordId);
     });
+}
+
+// making passwords visible
+void HashVault::togglePasswordVisibility(QLineEdit* field, bool checked) {
+	if (checked)
+		field->setEchoMode(QLineEdit::Normal);
+	else 
+		field->setEchoMode(QLineEdit::Password);
 }

@@ -23,6 +23,8 @@ private slots:
     void clearPasswordInputs();
     void cancelPasswordEditing();
 
+    void togglePasswordVisibility(QLineEdit* field,bool checked);
+
     // Authentication 
     void registerUser();
     void loginUser();
