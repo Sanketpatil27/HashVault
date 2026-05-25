@@ -979,7 +979,7 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
               </string>
             </property>
             <property name="placeholderText">
-             <string>Search passwords by website, username...</string>
+             <string>Search passwords by Website </string>
             </property>
            </widget>
           </item>

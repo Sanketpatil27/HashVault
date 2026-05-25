@@ -38,18 +38,16 @@ HashVault::HashVault(QWidget *parent)
     connect(ui.addPasswordBtn, &QPushButton::clicked, this, &HashVault::openAddPasswordPage);
     connect(ui.cancelAddBtn, &QPushButton::clicked,this, &HashVault::cancelPasswordEditing);
     connect(ui.settingsBackBtn, &QPushButton::clicked, this, &HashVault::backToDashboardFromSettings);
+    connect(ui.registerRedirectBtn, &QPushButton::clicked, this, &HashVault::openRegisterPage);         // Redirect to Register Page from login page
+    connect(ui.loginRedirectBtn, &QPushButton::clicked, this, &HashVault::openLoginPage);               // Redirect back to Login Page from register page
 
-    // Redirect to Register Page
-    connect(ui.registerRedirectBtn, &QPushButton::clicked, this, &HashVault::openRegisterPage);
-
-    // Redirect back to Login Page
-    connect(ui.loginRedirectBtn, &QPushButton::clicked, this, &HashVault::openLoginPage);
-
+    // auth connectors 
 	connect(ui.registerBtn, &QPushButton::clicked, this, &HashVault::registerUser);                 // adding to database
 	connect(ui.loginButton, &QPushButton::clicked, this, &HashVault::loginUser);                    // validating user credentials and then redirecting to dashboard
 
+    // Crud operations
 	connect(ui.savePasswordBtn, &QPushButton::clicked, this, &HashVault::addPassword);              // adding password to database and then refreshing the dashboard table to show the newly added password
-    
+    connect(ui.searchInput, &QLineEdit::textChanged, this, &HashVault::searchPasswords);
 }
 
 HashVault::~HashVault()
@@ -66,9 +64,7 @@ void HashVault::cancelPasswordEditing()
 {
     clearPasswordInputs();
 
-    ui.stackedWidget->setCurrentWidget(
-        ui.dashboardPage
-    );
+    ui.stackedWidget->setCurrentWidget(ui.dashboardPage);
 }
 
 
@@ -152,7 +148,6 @@ void HashVault::loginUser() {
 
 void HashVault::addPassword() {
     QString website = ui.websiteInput->text();
-    //QString url = ui.urlInput->text();
     QString username = ui.usernameFormInput->text();
     QString password = ui.passwordFormInput->text();
 	QString notes = ui.notesInput->toPlainText();
@@ -225,79 +220,7 @@ void HashVault::loadPasswords() {
 		int row = 0;
 
         while (query.next()) {
-			ui.passwordTable->insertRow(row);
-
-			// column 0 is hidden and used to store the id of the password entry
-            ui.passwordTable->setItem(row, 0, new QTableWidgetItem(query.value(0).toString()));
-
-			// visible columns in the table for website, username, password and notes
-			ui.passwordTable->setItem(row, 1, new QTableWidgetItem(query.value(1).toString())); // value at 1(column no.) is website in database
-			ui.passwordTable->setItem(row, 2, new QTableWidgetItem(query.value(2).toString())); // username
-			ui.passwordTable->setItem(row, 3, new QTableWidgetItem(query.value(3).toString())); // password
-			ui.passwordTable->setItem(row, 4, new QTableWidgetItem(query.value(6).toString())); // notes
-
-            // adding edit and delete buttons to each row in the table
-            QWidget* actionWidget = new QWidget();
-            QHBoxLayout* layout = new QHBoxLayout(actionWidget);
-
-            layout->setContentsMargins(0, 0, 0, 0);
-            layout->setSpacing(10);
-            layout->setAlignment(Qt::AlignCenter);
-
-            QPushButton* editBtn = new QPushButton("Edit");
-            QPushButton* deleteBtn = new QPushButton("Del");
-
-            editBtn->setFixedSize(55, 30);
-            deleteBtn->setFixedSize(55, 30);
-
-            editBtn->setCursor(Qt::PointingHandCursor);
-            deleteBtn->setCursor(Qt::PointingHandCursor);
-            
-            // styling the buttons
-            editBtn->setStyleSheet(
-                "QPushButton {"
-                "background-color:#3A7BD5;"
-                "color:white;"
-                "border:none;"
-                "border-radius:8px;"
-                "font-size:11px;"
-                "font-weight:bold;"
-                "padding:4px 8px;"
-                "}"
-            );
-
-            deleteBtn->setStyleSheet(
-                "QPushButton {"
-                "background-color:#E05C5C;"
-                "color:white;"
-                "border:none;"
-                "border-radius:8px;"
-                "font-size:11px;"
-                "font-weight:bold;"
-                "padding:4px 8px;"
-                "}"
-            );
-
-            // adding button to layout
-            layout->addWidget(editBtn);
-            layout->addWidget(deleteBtn);
-            actionWidget->setLayout(layout);
-
-            // adding to actions column
-            ui.passwordTable->setCellWidget(row, 5, actionWidget); // 4 is the column number for actions, first column is hidden
-
-			
-            // connecting buttons for edit and delete functionality by passing passwordId of current password row
-            int passwordId = query.value(0).toInt(); // get the id of the password entry from database to identify which entry to edit/delete when buttons are clicked
-
-            connect(deleteBtn, &QPushButton::clicked, this, [=]() {
-                deletePassword(passwordId);
-            });
-
-			connect(editBtn, &QPushButton::clicked, this, [=]() {
-                editPassword(passwordId);
-			});
-
+            addPasswordRow(row, query);
 			row++;
         }
     }
@@ -343,4 +266,107 @@ void HashVault::clearPasswordInputs() {
 	ui.notesInput->clear();
 
     editingPasswordId = -1;         // reseat the editing mode
+}
+
+void HashVault::searchPasswords(const QString &searchText) {
+    ui.passwordTable->setRowCount(0);
+
+    QSqlQuery query;
+
+    query.prepare(
+        "SELECT * FROM passwords "
+        "WHERE user_id = ? "
+        "AND LOWER(website) LIKE LOWER(?) "
+        "ORDER BY id"
+    );
+
+    query.addBindValue(currentUserId);
+    query.addBindValue("%" + searchText + "%");
+
+    if(query.exec())
+    {
+        int row = 0;
+        while (query.next())
+        {
+            addPasswordRow(row, query);
+            row++;
+        }
+    }
+}
+
+// helper function for adding rows into table
+void HashVault::addPasswordRow(int row, const QSqlQuery& query)
+{
+    ui.passwordTable->insertRow(row);
+
+    // column 0 is hidden and used to store the id of the password entry
+    ui.passwordTable->setItem(row, 0, new QTableWidgetItem(query.value(0).toString()));
+
+    // visible columns in the table for website, username, password and notes
+    ui.passwordTable->setItem(row, 1, new QTableWidgetItem(query.value(1).toString())); // value at 1(column no.) is website in database
+    ui.passwordTable->setItem(row, 2, new QTableWidgetItem(query.value(2).toString())); // username
+    ui.passwordTable->setItem(row, 3, new QTableWidgetItem(query.value(3).toString())); // password
+    ui.passwordTable->setItem(row, 4, new QTableWidgetItem(query.value(6).toString())); // notes
+
+    // adding edit and delete buttons to each row in the table
+    QWidget* actionWidget = new QWidget();
+    QHBoxLayout* layout = new QHBoxLayout(actionWidget);
+
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(10);
+    layout->setAlignment(Qt::AlignCenter);
+
+    QPushButton* editBtn = new QPushButton("Edit");
+    QPushButton* deleteBtn = new QPushButton("Del");
+
+    editBtn->setFixedSize(55, 30);
+    deleteBtn->setFixedSize(55, 30);
+
+    editBtn->setCursor(Qt::PointingHandCursor);
+    deleteBtn->setCursor(Qt::PointingHandCursor);
+
+    // styling the buttons
+    editBtn->setStyleSheet(
+        "QPushButton {"
+        "background-color:#3A7BD5;"
+        "color:white;"
+        "border:none;"
+        "border-radius:8px;"
+        "font-size:11px;"
+        "font-weight:bold;"
+        "padding:4px 8px;"
+        "}"
+    );
+
+    deleteBtn->setStyleSheet(
+        "QPushButton {"
+        "background-color:#E05C5C;"
+        "color:white;"
+        "border:none;"
+        "border-radius:8px;"
+        "font-size:11px;"
+        "font-weight:bold;"
+        "padding:4px 8px;"
+        "}"
+    );
+
+    // adding button to layout
+    layout->addWidget(editBtn);
+    layout->addWidget(deleteBtn);
+    actionWidget->setLayout(layout);
+
+    // adding to actions column
+    ui.passwordTable->setCellWidget(row, 5, actionWidget); // 4 is the column number for actions, first column is hidden
+
+
+    // connecting buttons for edit and delete functionality by passing passwordId of current password row
+    int passwordId = query.value(0).toInt(); // get the id of the password entry from database to identify which entry to edit/delete when buttons are clicked
+
+    connect(deleteBtn, &QPushButton::clicked, this, [=]() {
+        deletePassword(passwordId);
+    });
+
+    connect(editBtn, &QPushButton::clicked, this, [=]() {
+        editPassword(passwordId);
+    });
 }

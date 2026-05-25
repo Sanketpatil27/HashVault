@@ -32,7 +32,8 @@ private slots:
     void loadPasswords(); 
     void deletePassword(int id);
     void editPassword(int id);
-    
+	void searchPasswords(const QString& keyword);
+    void addPasswordRow(int row, const QSqlQuery& query);
 
 private:
     Ui::HashVaultClass ui;
