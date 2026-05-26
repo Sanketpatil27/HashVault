@@ -4,11 +4,18 @@
 #include <QSqlError>
 #include <QDebug>
 #include <qmessagebox.h>
+#include <QInputDialog>
+#include <QTimer>   
 
 HashVault::HashVault(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
+
+    // Adding AUTO LOCK TIMER
+    autoLockTimer = new QTimer(this);
+    connect(ui.autoLockCheckBox,&QCheckBox::toggled, this, &HashVault::handleAutoLock);
+    connect(autoLockTimer, &QTimer::timeout, this, &HashVault::autoLockVault);
 
     // hidden column for id of the password
     ui.passwordTable->setColumnHidden(0, true);
@@ -41,6 +48,17 @@ HashVault::HashVault(QWidget *parent)
     connect(ui.registerRedirectBtn, &QPushButton::clicked, this, &HashVault::openRegisterPage);         // Redirect to Register Page from login page
     connect(ui.loginRedirectBtn, &QPushButton::clicked, this, &HashVault::openLoginPage);               // Redirect back to Login Page from register page
 
+    // auth connectors 
+    connect(ui.registerBtn, &QPushButton::clicked, this, &HashVault::registerUser);                 // adding to database
+    connect(ui.loginButton, &QPushButton::clicked, this, &HashVault::loginUser);                    // validating user credentials and then redirecting to dashboard
+    connect(ui.navLogout, &QPushButton::clicked, this, &HashVault::logoutUser);
+
+    // Crud operations
+    connect(ui.savePasswordBtn, &QPushButton::clicked, this, &HashVault::addPassword);              // adding password to database and then refreshing the dashboard table to show the newly added password
+    connect(ui.searchInput, &QLineEdit::textChanged, this, &HashVault::searchPasswords);
+    connect(ui.changeMasterPwdBtn, &QPushButton::clicked, this, &HashVault::changeMasterPassword);   // the the main master password of user
+
+
     // change password toggles
 	connect(ui.loginShowPasswordCheckBox, &QCheckBox::toggled, this, 
         [=](bool checked) 
@@ -62,15 +80,7 @@ HashVault::HashVault(QWidget *parent)
         {
             togglePasswordVisibility(ui.passwordFormInput, checked);
         }
-    );
-
-    // auth connectors 
-	connect(ui.registerBtn, &QPushButton::clicked, this, &HashVault::registerUser);                 // adding to database
-	connect(ui.loginButton, &QPushButton::clicked, this, &HashVault::loginUser);                    // validating user credentials and then redirecting to dashboard
-
-    // Crud operations
-	connect(ui.savePasswordBtn, &QPushButton::clicked, this, &HashVault::addPassword);              // adding password to database and then refreshing the dashboard table to show the newly added password
-    connect(ui.searchInput, &QLineEdit::textChanged, this, &HashVault::searchPasswords);
+    );    
 }
 
 HashVault::~HashVault()
@@ -159,12 +169,24 @@ void HashVault::loginUser() {
         
         loadPasswords();
 
+        clearLoginRegisterInputs();     // clear the input fields from login/register
+
 		ui.stackedWidget->setCurrentWidget(ui.dashboardPage);               // Redirect to dashboard page after successful login
 	}
 	else {
 		QMessageBox::critical(this, "Error", "Invalid username or password");
 	}
 }
+
+void HashVault::logoutUser() {
+    currentUserId = -1;
+    autoLockTimer->stop();
+
+    QMessageBox::information(this, "Logout", "Logged out successfully!");
+
+    ui.stackedWidget->setCurrentWidget(ui.loginPage);
+}
+
 
 
 // ---------------------------- Password CRUD operations ----------------------------------
@@ -296,15 +318,6 @@ void HashVault::editPassword(int id) {
     }
 }
 
-void HashVault::clearPasswordInputs() {
-	ui.websiteInput->clear();
-	ui.usernameFormInput->clear();
-	ui.passwordFormInput->clear();
-	ui.notesInput->clear();
-
-    editingPasswordId = -1;         // reseat the editing mode
-}
-
 void HashVault::searchPasswords(const QString &searchText) {
     ui.passwordTable->setRowCount(0);
 
@@ -414,4 +427,84 @@ void HashVault::togglePasswordVisibility(QLineEdit* field, bool checked) {
 		field->setEchoMode(QLineEdit::Normal);
 	else 
 		field->setEchoMode(QLineEdit::Password);
+}
+
+void HashVault::changeMasterPassword() {
+    bool ok;
+
+    QString currentPassword = QInputDialog::getText(this, "Current Password", "Enter Current Password", QLineEdit::Normal, "", &ok);
+
+    if (!ok || currentPassword.isEmpty())
+        return;
+
+    // verify the current password
+    QSqlQuery verifyQuery;
+
+	verifyQuery.prepare("SELECT password FROM users WHERE id = ? AND password = ?");
+    verifyQuery.addBindValue(currentUserId);
+	verifyQuery.addBindValue(currentPassword); // will hash the password before comparing in later submissions
+
+    // if password is not matching then give warning
+    if (!(verifyQuery.exec() && verifyQuery.next()))
+    {
+        QMessageBox::warning(this, "Error", "Current password is incorrect");
+        return;
+    }
+
+    // ask for new password if matched
+    QString newPassword = QInputDialog::getText(this, "New Password", "Enter new master password:", QLineEdit::Normal, "", &ok);
+
+    if (!ok || newPassword.isEmpty())
+        return;
+    
+    // now update the password
+    QSqlQuery updateQuery;
+
+    updateQuery.prepare("UPDATE users SET password = ? WHERE id = ?");
+
+    updateQuery.addBindValue(newPassword);
+    updateQuery.addBindValue(currentUserId);
+
+    if (updateQuery.exec())
+        QMessageBox::information(this, "Success", "Master password updated successfully!");
+    else
+        QMessageBox::warning(this, "Error", updateQuery.lastError().text());
+}
+
+void HashVault::handleAutoLock(bool enabled)
+{
+    if (enabled)
+        autoLockTimer->start(10000);
+    else
+        autoLockTimer->stop();
+}
+
+void HashVault::autoLockVault()
+{
+    QMessageBox::information(this, "Vault Locked", "Session expired due to inactivity");
+    logoutUser();
+}
+
+
+
+// ------------------- clear input fields -----------------------
+
+void HashVault::clearPasswordInputs() {
+    ui.websiteInput->clear();
+    ui.usernameFormInput->clear();
+    ui.passwordFormInput->clear();
+    ui.notesInput->clear();
+
+    editingPasswordId = -1;         // reseat the editing mode
+}
+
+void HashVault::clearLoginRegisterInputs()
+{
+    ui.loginUsernameInput->clear();
+    ui.loginPasswordInput->clear();
+    ui.registerFullNameInput->clear();
+    ui.registerUsernameInput->clear();
+    ui.registerEmailInput->clear();
+    ui.registerPasswordInput->clear();
+    ui.registerConfirmPasswordInput->clear();
 }

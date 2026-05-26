@@ -3,6 +3,7 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_HashVault.h"
 #include <QSqlDatabase>
+#include <QTimer>
 
 class HashVault : public QMainWindow
 {
@@ -36,10 +37,17 @@ private slots:
     void editPassword(int id);
 	void searchPasswords(const QString& keyword);
     void addPasswordRow(int row, const QSqlQuery& query);
+    void changeMasterPassword();
+    void handleAutoLock(bool enabled);
+    void autoLockVault();
+    void logoutUser();
+    void clearLoginRegisterInputs();
 
 private:
     Ui::HashVaultClass ui;
 	QSqlDatabase db;                // create global database object to be used across the application
+    QTimer* autoLockTimer;
+
     int currentUserId = -1;         // store the logged-in user's id
     int editingPasswordId = -1;     // store the id of the password entry being edited
 };

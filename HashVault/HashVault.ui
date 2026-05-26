@@ -762,12 +762,12 @@ QPushButton:hover { background-color: #1E2536; color: #FFFFFF; }
            <widget class="QPushButton" name="navLogout">
             <property name="styleSheet">
              <string notr="true">
-QPushButton {
-    background-color: transparent; color: #E05C5C; border: none;
-    border-radius: 8px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
-    text-align: left; padding-left: 16px;
-}
-QPushButton:hover { background-color: #2D1F1F; color: #FF6B6B; }
+                QPushButton {
+                    background-color: transparent; color: #E05C5C; border: none;
+                    border-radius: 8px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
+                    text-align: left; padding-left: 16px;
+                }
+                QPushButton:hover { background-color: #2D1F1F; color: #FF6B6B; }
               </string>
             </property>
             <property name="text">
@@ -1353,6 +1353,7 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
         </item>
        </layout>
       </widget>
+      <!-- settings page -->
       <widget class="QWidget" name="settingsPage">
        <property name="styleSheet">
         <string notr="true">QWidget#settingsPage { background-color: #0F1421; }</string>
@@ -1471,7 +1472,7 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
               <property name="bottomMargin">
                <number>20</number>
               </property>
-              <item>
+              <!-- <item>
                <widget class="QLabel" name="appearanceSectionTitle">
                 <property name="styleSheet">
                  <string notr="true">color: #FFFFFF; font-size: 14px; font-weight: bold; font-family: &quot;Segoe UI&quot;; background: transparent;</string>
@@ -1560,7 +1561,7 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
               </property>
               <property name="bottomMargin">
                <number>20</number>
-              </property>
+              </property> -->
               <item>
                <widget class="QLabel" name="securitySectionTitle">
                 <property name="styleSheet">
@@ -1789,6 +1790,8 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
         </item>
        </layout>
       </widget>
+
+      <!-- register page -->
       <widget class="QWidget" name="registerPage">
        <property name="styleSheet">
         <string notr="true">
