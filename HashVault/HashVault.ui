@@ -30,6 +30,7 @@
             font-family: &quot;Segoe UI&quot;;
             padding: 10px 16px;
         }
+        
 
         QPushButton:hover {
             background-color: #3A7BD5;
@@ -63,9 +64,6 @@
             background: transparent;
         }
 
-        
-
-
         QScrollBar:vertical {
             background: #1A1F2E;
             width: 6px;
@@ -93,6 +91,392 @@
         QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
             width: 0px;
         }
+
+        QLineEdit {
+            background-color: #1E2536; color: #FFFFFF;
+            border: 1px solid #2A3244; border-radius: 8px;
+            padding: 12px 16px; font-size: 14px; font-family: &quot;Segoe UI&quot;;
+        }
+        QLineEdit:focus { border: 1px solid #4F8EF7; background-color: #222B40; }
+
+
+        <!-- register page css -->
+        QPushButton#registerRedirectBtn {
+            background: transparent;
+            color: #4F8EF7;
+            border: none;
+            font-size: 12px;
+            font-family: &quot;Segoe UI&quot;;
+        }
+
+        QPushButton#registerRedirectBtn:hover {
+            color: #7DB2FF;
+        }
+
+        
+        QWidget#registerPage {
+            background-color: #0F1421;
+        }
+
+        QFrame#registerCard {
+            background-color: #1A2235;
+            border-radius: 18px;
+            border: 1px solid #2A3244;
+        }
+
+        QLabel#registerTitle {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            font-family: &quot;Segoe UI&quot;;
+        }
+
+        QLabel#registerSubtitle {
+            color: #AAB3C5;
+            font-size: 12px;
+            font-family: &quot;Segoe UI&quot;;
+        }
+
+        QPushButton#registerBtn {
+            background-color: #4F8EF7;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: &quot;Segoe UI&quot;;
+        }
+
+        QPushButton#registerBtn:hover {
+            background-color: #3A7BD5;
+        }
+
+        QPushButton#registerBtn:pressed {
+            background-color: #2E6BC4;
+        }
+
+        QPushButton#loginRedirectBtn {
+            background: transparent;
+            color: #4F8EF7;
+            border: none;
+            font-size: 12px;
+            font-family: &quot;Segoe UI&quot;;
+        }
+
+        QPushButton#loginRedirectBtn:hover {
+            color: #7DB2FF;
+        }
+
+        QCheckBox {
+            color: #C0C8D8;
+            font-size: 12px;
+            font-family: &quot;Segoe UI&quot;;
+        }
+
+        QPushButton#registerRedirectBtn {
+        background: transparent;
+        color: #4F8EF7;
+        border: none;
+        font-size: 12px;
+        font-family: &quot;
+        Segoe UI&quot;
+        ;
+    }
+
+    QPushButton#registerRedirectBtn:hover {
+        color: #7DB2FF;
+    }
+
+    QPushButton#navAllPasswords {
+        background-color: #4F8EF7;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: bold;
+        font-family: &quot;
+        Segoe UI&quot;
+        ;
+        text-align: left;
+        padding-left: 16px;
+    }
+
+    QPushButton#navAllPasswords:hover {
+        background-color: #3A7BD5;
+    }
+
+    QPushButton#navSocial {
+        background-color: transparent;
+        color: #8892A4;
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-family: &quot;
+        Segoe UI&quot;
+        ;
+        text-align: left;
+        padding-left: 16px;
+    }
+
+    QPushButton#navSocial:hover {
+        background-color: #1E2536;
+        color: #FFFFFF;
+    }
+
+    QPushButton#navBanking {
+        background-color: transparent;
+        color: #8892A4;
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-family: &quot;
+        Segoe UI&quot;
+        ;
+        text-align: left;
+        padding-left: 16px;
+    }
+
+    QPushButton#navBanking:hover {
+        background-color: #1E2536;
+        color: #FFFFFF;
+    }
+
+    QPushButton#navWork {
+        background-color: transparent;
+        color: #8892A4;
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-family: &quot;
+        Segoe UI&quot;
+        ;
+        text-align: left;
+        padding-left: 16px;
+    }
+
+    QPushButton#navWork:hover {
+        background-color: #1E2536;
+        color: #FFFFFF;
+    }
+
+    QPushButton#navSettings {
+        background-color: transparent;
+        color: #8892A4;
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-family: &quot;
+        Segoe UI&quot;
+        ;
+        text-align: left;
+        padding-left: 16px;
+    }
+
+    QPushButton#navSettings:hover {
+        background-color: #1E2536;
+        color: #FFFFFF;
+    }
+
+    QPushButton#navLogout {
+        background-color: transparent;
+        color: #E05C5C;
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-family: &quot;
+        Segoe UI&quot;
+        ;
+        text-align: left;
+        padding-left: 16px;
+    }
+
+    QPushButton#navLogout:hover {
+        background-color: #2D1F1F;
+        color: #FF6B6B;
+    }
+
+    QLineEdit#searchInput {
+        background-color: #1E2536;
+        color: #FFFFFF;
+        border: 1px solid #2A3244;
+        border-radius: 8px;
+        padding: 10px 16px;
+        font-size: 13px;
+        font-family: &quot;
+        Segoe UI&quot;
+        ;
+    }
+
+    QLineEdit#searchInput:focus {
+        border: 1px solid #4F8EF7;
+    }
+
+    QTableWidget {
+        background-color: #1E2536;
+        color: #FFFFFF;
+        border: 1px solid #2A3244;
+        border-radius: 10px;
+        gridline-color: #2A3244;
+        font-family: &quot;
+        Segoe UI&quot;
+        ;
+        font-size: 13px;
+        outline: none;
+    }
+
+    QTableWidget::item {
+        padding: 12px 16px;
+        border-bottom: 1px solid #2A3244;
+    }
+
+    QTableWidget::item:selected {
+        background-color: rgba(79, 142, 247, 0.18);
+        color: #FFFFFF;
+    }
+
+    QHeaderView::section {
+        background-color: #151C2E;
+        color: #8892A4;
+        padding: 12px 16px;
+        border: none;
+        border-bottom: 2px solid #2A3244;
+        font-weight: bold;
+        font-size: 11px;
+        font-family: &quot;
+        Segoe UI&quot;
+        ;
+    }
+
+    QLineEdit#websiteInput {
+        background-color: #252D40;
+        color: #FFFFFF;
+        border: 1px solid #2A3244;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 13px;
+        font-family: &quot;
+        Segoe UI&quot;
+        ;
+    }
+
+    QLineEdit#websiteInput:focus {
+        border: 1px solid #4F8EF7;
+    }
+
+    QLineEdit#usernameFormInput {
+        background-color: #252D40;
+        color: #FFFFFF;
+        border: 1px solid #2A3244;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 13px;
+        font-family: &quot;
+        Segoe UI&quot;
+        ;
+    }
+
+    QLineEdit#usernameFormInput:focus {
+        border: 1px solid #4F8EF7;
+    }
+
+    QLineEdit#passwordFormInput {
+        background-color: #252D40;
+        color: #FFFFFF;
+        border: 1px solid #2A3244;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 13px;
+        font-family: &quot;
+        Segoe UI&quot;
+        ;
+    }
+
+    QLineEdit#passwordFormInput:focus {
+        border: 1px solid #4F8EF7;
+    }
+
+    QTextEdit#notesInput {
+        background-color: #252D40;
+        color: #FFFFFF;
+        border: 1px solid #2A3244;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 13px;
+        font-family: &quot;
+        Segoe UI&quot;
+        ;
+    }
+
+    QTextEdit#notesInput:focus {
+        border: 1px solid #4F8EF7;
+    }
+
+    QPushButton#cancelAddBtn {
+        background-color: transparent;
+        color: #8892A4;
+        border: 1px solid #3A4255;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: &quot;
+        Segoe UI&quot;
+        ;
+    }
+
+    QPushButton#cancelAddBtn:hover {
+        background-color: #252D40;
+        color: #FFFFFF;
+        border-color: #4A5568;
+    }
+
+    PushButton#savePasswordBtn {
+        background-color: #4F8EF7;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: bold;
+        font-family: &quot;
+        Segoe UI&quot;
+        ;
+    }
+
+    QPushButton#savePasswordBtn:hover {
+        background-color: #3A7BD5;
+    }
+
+    QPushButton#savePasswordBtn:pressed {
+        background-color: #2E6BC4;
+    }
+
+    QCheckBox#autoLockCheckBox::indicator {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #3A4255;
+        border-radius: 4px;
+        background-color: #252D40;
+    }
+
+    QCheckBox#autoLockCheckBox::indicator:checked {
+        background-color: #4F8EF7;
+        border-color: #4F8EF7;
+    }
+
+    QPushButton#changeMasterPwdBtn {
+        background-color: transparent;
+        color: #4F8EF7;
+        border: 1px solid #4F8EF7;
+        border-radius: 8px;
+        font-size: 13px;
+        font-family: &quot;
+        Segoe UI&quot;
+        ;
+    }
+
+    QPushButton#changeMasterPwdBtn:hover {
+        background-color: rgba(79, 142, 247, 0.12);
+    }
+        
    </string>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -360,16 +744,6 @@
           </item>
           <item>
            <widget class="QLineEdit" name="loginUsernameInput">
-            <property name="styleSheet">
-             <string notr="true">
-                QLineEdit {
-                    background-color: #1E2536; color: #FFFFFF;
-                    border: 1px solid #2A3244; border-radius: 8px;
-                    padding: 12px 16px; font-size: 14px; font-family: &quot;Segoe UI&quot;;
-                }
-                QLineEdit:focus { border: 1px solid #4F8EF7; background-color: #222B40; }
-              </string>
-            </property>
             <property name="placeholderText">
              <string>Enter your username</string>
             </property>
@@ -406,16 +780,6 @@
           </item>
           <item>
            <widget class="QLineEdit" name="loginPasswordInput">
-            <property name="styleSheet">
-             <string notr="true">
-                QLineEdit {
-                    background-color: #1E2536; color: #FFFFFF;
-                    border: 1px solid #2A3244; border-radius: 8px;
-                    padding: 12px 16px; font-size: 14px; font-family: &quot;Segoe UI&quot;;
-                }
-                QLineEdit:focus { border: 1px solid #4F8EF7; background-color: #222B40; }
-              </string>
-            </property>
             <property name="echoMode">
              <enum>QLineEdit::EchoMode::Password</enum>
             </property>
@@ -471,16 +835,6 @@
               <height>32</height>
              </size>
             </property>
-            <property name="styleSheet">
-             <string notr="true">
-                QPushButton {
-                    background-color: #4F8EF7; color: #FFFFFF; border: none;
-                    border-radius: 8px; font-size: 15px; font-weight: bold; font-family: &quot;Segoe UI&quot;;
-                }
-                QPushButton:hover { background-color: #3A7BD5; }
-                QPushButton:pressed { background-color: #2E6BC4; }
-              </string>
-            </property>
             <property name="text">
              <string>Login</string>
             </property>
@@ -504,21 +858,6 @@
           </item>
           <item>
            <widget class="QPushButton" name="registerRedirectBtn">
-            <property name="styleSheet">
-             <string notr="true">
-                QPushButton#registerRedirectBtn {
-                    background: transparent;
-                    color: #4F8EF7;
-                    border: none;
-                    font-size: 12px;
-                    font-family: &quot;Segoe UI&quot;;
-                }
-
-                QPushButton#registerRedirectBtn:hover {
-                    color: #7DB2FF;
-                }
-              </string>
-            </property>
             <property name="text">
              <string>Don't have an account? Register</string>
             </property>
@@ -619,35 +958,8 @@
           </item>
           <item>
            <widget class="QPushButton" name="navAllPasswords">
-            <property name="styleSheet">
-             <string notr="true">
-                QPushButton {
-                    background-color: #4F8EF7; color: #FFFFFF; border: none;
-                    border-radius: 8px; font-size: 13px; font-weight: bold; font-family: &quot;Segoe UI&quot;;
-                    text-align: left; padding-left: 16px;
-                }
-                QPushButton:hover { background-color: #3A7BD5; }
-              </string>
-            </property>
             <property name="text">
              <string>🔑  All Passwords</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="navFavorites">
-            <property name="styleSheet">
-             <string notr="true">
-                QPushButton {
-                    background-color: transparent; color: #8892A4; border: none;
-                    border-radius: 8px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
-                    text-align: left; padding-left: 16px;
-                }
-                QPushButton:hover { background-color: #1E2536; color: #FFFFFF; }
-              </string>
-            </property>
-            <property name="text">
-             <string>⭐  Favorites</string>
             </property>
            </widget>
           </item>
@@ -666,16 +978,6 @@
           </item>
           <item>
            <widget class="QPushButton" name="navSocial">
-            <property name="styleSheet">
-             <string notr="true">
-                QPushButton {
-                    background-color: transparent; color: #8892A4; border: none;
-                    border-radius: 8px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
-                    text-align: left; padding-left: 16px;
-                }
-                QPushButton:hover { background-color: #1E2536; color: #FFFFFF; }
-              </string>
-            </property>
             <property name="text">
              <string>👥  Social Media</string>
             </property>
@@ -683,16 +985,6 @@
           </item>
           <item>
            <widget class="QPushButton" name="navBanking">
-            <property name="styleSheet">
-             <string notr="true">
-                QPushButton {
-                    background-color: transparent; color: #8892A4; border: none;
-                    border-radius: 8px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
-                    text-align: left; padding-left: 16px;
-                }
-                QPushButton:hover { background-color: #1E2536; color: #FFFFFF; }
-              </string>
-            </property>
             <property name="text">
              <string>🏢  Banking</string>
             </property>
@@ -700,16 +992,6 @@
           </item>
           <item>
            <widget class="QPushButton" name="navWork">
-            <property name="styleSheet">
-             <string notr="true">
-                QPushButton {
-                    background-color: transparent; color: #8892A4; border: none;
-                    border-radius: 8px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
-                    text-align: left; padding-left: 16px;
-                }
-                QPushButton:hover { background-color: #1E2536; color: #FFFFFF; }
-              </string>
-            </property>
             <property name="text">
              <string>💼  Work</string>
             </property>
@@ -743,16 +1025,6 @@
           </item>
           <item>
            <widget class="QPushButton" name="navSettings">
-            <property name="styleSheet">
-             <string notr="true">
-QPushButton {
-    background-color: transparent; color: #8892A4; border: none;
-    border-radius: 8px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
-    text-align: left; padding-left: 16px;
-}
-QPushButton:hover { background-color: #1E2536; color: #FFFFFF; }
-              </string>
-            </property>
             <property name="text">
              <string>⚙  Settings</string>
             </property>
@@ -760,16 +1032,6 @@ QPushButton:hover { background-color: #1E2536; color: #FFFFFF; }
           </item>
           <item>
            <widget class="QPushButton" name="navLogout">
-            <property name="styleSheet">
-             <string notr="true">
-                QPushButton {
-                    background-color: transparent; color: #E05C5C; border: none;
-                    border-radius: 8px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
-                    text-align: left; padding-left: 16px;
-                }
-                QPushButton:hover { background-color: #2D1F1F; color: #FF6B6B; }
-              </string>
-            </property>
             <property name="text">
              <string>🚪  Logout</string>
             </property>
@@ -800,8 +1062,8 @@ QPushButton:hover { background-color: #1E2536; color: #FFFFFF; }
              <widget class="QLabel" name="dashboardTitle">
               <property name="styleSheet">
                <string notr="true">
-color: #FFFFFF; font-size: 22px; font-weight: bold;
-font-family: &quot;Segoe UI&quot;; background: transparent;
+                color: #FFFFFF; font-size: 22px; font-weight: bold;
+                font-family: &quot;Segoe UI&quot;; background: transparent;
                 </string>
               </property>
               <property name="text">
@@ -824,17 +1086,6 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
             </item>
             <item>
              <widget class="QPushButton" name="addPasswordBtn">
-              <property name="styleSheet">
-               <string notr="true">
-                    QPushButton {
-                        background-color: #4F8EF7; color: #FFFFFF; border: none;
-                        border-radius: 8px; font-size: 13px; font-weight: bold;
-                        font-family: &quot;Segoe UI&quot;; padding: 10px 20px;
-                    }
-                    QPushButton:hover { background-color: #3A7BD5; }
-                    QPushButton:pressed { background-color: #2E6BC4; }
-                </string>
-              </property>
               <property name="text">
                <string>+  Add Password</string>
               </property>
@@ -968,16 +1219,6 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
           </item>
           <item>
            <widget class="QLineEdit" name="searchInput">
-            <property name="styleSheet">
-             <string notr="true">
-                QLineEdit {
-                    background-color: #1E2536; color: #FFFFFF;
-                    border: 1px solid #2A3244; border-radius: 8px;
-                    padding: 10px 16px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
-                }
-                QLineEdit:focus { border: 1px solid #4F8EF7; }
-              </string>
-            </property>
             <property name="placeholderText">
              <string>Search passwords by Website </string>
             </property>
@@ -985,28 +1226,6 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
           </item>
           <item>
            <widget class="QTableWidget" name="passwordTable">
-            <property name="styleSheet">
-             <string notr="true">
-                QTableWidget {
-                    background-color: #1E2536; color: #FFFFFF;
-                    border: 1px solid #2A3244; border-radius: 10px;
-                    gridline-color: #2A3244; font-family: &quot;Segoe UI&quot;; font-size: 13px;
-                    outline: none;
-                }
-                QTableWidget::item {
-                    padding: 12px 16px; border-bottom: 1px solid #2A3244;
-                }
-                QTableWidget::item:selected {
-                    background-color: rgba(79, 142, 247, 0.18); color: #FFFFFF;
-                }
-                QHeaderView::section {
-                    background-color: #151C2E; color: #8892A4;
-                    padding: 12px 16px; border: none;
-                    border-bottom: 2px solid #2A3244;
-                    font-weight: bold; font-size: 11px; font-family: &quot;Segoe UI&quot;;
-                }
-              </string>
-            </property>
             <property name="editTriggers">
              <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
             </property>
@@ -1182,16 +1401,6 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
               </item>
               <item>
                <widget class="QLineEdit" name="websiteInput">
-                <property name="styleSheet">
-                 <string notr="true">
-                    QLineEdit {
-                        background-color: #252D40; color: #FFFFFF;
-                        border: 1px solid #2A3244; border-radius: 8px;
-                        padding: 10px 14px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
-                    }
-                    QLineEdit:focus { border: 1px solid #4F8EF7; }
-                  </string>
-                </property>
                 <property name="placeholderText">
                  <string>e.g. google.com, facebook.com, netflix...</string>
                 </property>
@@ -1209,16 +1418,6 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
               </item>
               <item>
                <widget class="QLineEdit" name="usernameFormInput">
-                <property name="styleSheet">
-                 <string notr="true">
-                    QLineEdit {
-                        background-color: #252D40; color: #FFFFFF;
-                        border: 1px solid #2A3244; border-radius: 8px;
-                        padding: 10px 14px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
-                    }
-                    QLineEdit:focus { border: 1px solid #4F8EF7; }
-                  </string>
-                </property>
                 <property name="placeholderText">
                  <string>Enter username</string>
                 </property>
@@ -1236,16 +1435,6 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
               </item>
               <item>
                <widget class="QLineEdit" name="passwordFormInput">
-                <property name="styleSheet">
-                 <string notr="true">
-                    QLineEdit {
-                        background-color: #252D40; color: #FFFFFF;
-                        border: 1px solid #2A3244; border-radius: 8px;
-                        padding: 10px 14px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
-                    }
-                    QLineEdit:focus { border: 1px solid #4F8EF7; }
-                  </string>
-                </property>
                 <property name="echoMode">
                  <enum>QLineEdit::EchoMode::Password</enum>
                 </property>
@@ -1273,16 +1462,6 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
               </item>
               <item>
                <widget class="QTextEdit" name="notesInput">
-                <property name="styleSheet">
-                 <string notr="true">
-                    QTextEdit {
-                        background-color: #252D40; color: #FFFFFF;
-                        border: 1px solid #2A3244; border-radius: 8px;
-                        padding: 10px 14px; font-size: 13px; font-family: &quot;Segoe UI&quot;;
-                    }
-                    QTextEdit:focus { border: 1px solid #4F8EF7; }
-                  </string>
-                </property>
                 <property name="placeholderText">
                  <string>Any additional notes...</string>
                 </property>
@@ -1298,16 +1477,6 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
                 </property>
                 <item>
                  <widget class="QPushButton" name="cancelAddBtn">
-                  <property name="styleSheet">
-                   <string notr="true">
-                    QPushButton {
-                        background-color: transparent; color: #8892A4;
-                        border: 1px solid #3A4255; border-radius: 8px;
-                        font-size: 14px; font-family: &quot;Segoe UI&quot;;
-                    }
-                    QPushButton:hover { background-color: #252D40; color: #FFFFFF; border-color: #4A5568; }
-                    </string>
-                  </property>
                   <property name="text">
                    <string>Cancel</string>
                   </property>
@@ -1315,16 +1484,6 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
                 </item>
                 <item>
                  <widget class="QPushButton" name="savePasswordBtn">
-                  <property name="styleSheet">
-                   <string notr="true">
-                        QPushButton {
-                            background-color: #4F8EF7; color: #FFFFFF; border: none;
-                            border-radius: 8px; font-size: 14px; font-weight: bold; font-family: &quot;Segoe UI&quot;;
-                        }
-                        QPushButton:hover { background-color: #3A7BD5; }
-                        QPushButton:pressed { background-color: #2E6BC4; }
-                    </string>
-                  </property>
                   <property name="text">
                    <string>Save Password</string>
                   </property>
@@ -1472,96 +1631,6 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
               <property name="bottomMargin">
                <number>20</number>
               </property>
-              <!-- <item>
-               <widget class="QLabel" name="appearanceSectionTitle">
-                <property name="styleSheet">
-                 <string notr="true">color: #FFFFFF; font-size: 14px; font-weight: bold; font-family: &quot;Segoe UI&quot;; background: transparent;</string>
-                </property>
-                <property name="text">
-                 <string>Appearance</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QFrame" name="divAppearance">
-                <property name="styleSheet">
-                 <string notr="true">color: #2A3244;</string>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::Shape::HLine</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Shadow::Plain</enum>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout">
-                <item>
-                 <widget class="QLabel" name="darkModeSettingLabel">
-                  <property name="styleSheet">
-                   <string notr="true">color: #C0C8D8; font-size: 13px; font-family: &quot;Segoe UI&quot;; background: transparent;</string>
-                  </property>
-                  <property name="text">
-                   <string>Dark Mode</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer>
-                  <property name="orientation">
-                   <enum>Qt::Orientation::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="QCheckBox" name="darkModeCheckBox">
-                  <property name="styleSheet">
-                   <string notr="true">
-                        QCheckBox::indicator {
-                            width: 20px; height: 20px;
-                            border: 2px solid #3A4255; border-radius: 4px; background-color: #252D40;
-                        }
-                        QCheckBox::indicator:checked {
-                            background-color: #4F8EF7; border-color: #4F8EF7;
-                        }
-                    </string>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout">
-              <property name="spacing">
-               <number>14</number>
-              </property>
-              <property name="leftMargin">
-               <number>24</number>
-              </property>
-              <property name="topMargin">
-               <number>20</number>
-              </property>
-              <property name="rightMargin">
-               <number>24</number>
-              </property>
-              <property name="bottomMargin">
-               <number>20</number>
-              </property> -->
               <item>
                <widget class="QLabel" name="securitySectionTitle">
                 <property name="styleSheet">
@@ -1629,17 +1698,6 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
                 </item>
                 <item>
                  <widget class="QCheckBox" name="autoLockCheckBox">
-                  <property name="styleSheet">
-                   <string notr="true">
-                        QCheckBox::indicator {
-                            width: 20px; height: 20px;
-                            border: 2px solid #3A4255; border-radius: 4px; background-color: #252D40;
-                        }
-                        QCheckBox::indicator:checked {
-                            background-color: #4F8EF7; border-color: #4F8EF7;
-                        }
-                    </string>
-                  </property>
                   <property name="text">
                    <string/>
                   </property>
@@ -1662,16 +1720,6 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
               </item>
               <item>
                <widget class="QPushButton" name="changeMasterPwdBtn">
-                <property name="styleSheet">
-                 <string notr="true">
-                    QPushButton {
-                        background-color: transparent; color: #4F8EF7;
-                        border: 1px solid #4F8EF7; border-radius: 8px;
-                        font-size: 13px; font-family: &quot;Segoe UI&quot;;
-                    }
-                    QPushButton:hover { background-color: rgba(79,142,247,0.12); }
-                  </string>
-                </property>
                 <property name="text">
                  <string>Change Master Password</string>
                 </property>
@@ -1793,85 +1841,6 @@ font-family: &quot;Segoe UI&quot;; background: transparent;
 
       <!-- register page -->
       <widget class="QWidget" name="registerPage">
-       <property name="styleSheet">
-        <string notr="true">
-
-        QWidget#registerPage {
-            background-color: #0F1421;
-        }
-
-        QFrame#registerCard {
-            background-color: #1A2235;
-            border-radius: 18px;
-            border: 1px solid #2A3244;
-        }
-
-        QLabel#registerTitle {
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            font-family: &quot;Segoe UI&quot;;
-        }
-
-        QLabel#registerSubtitle {
-            color: #AAB3C5;
-            font-size: 12px;
-            font-family: &quot;Segoe UI&quot;;
-        }
-
-        QLineEdit {
-            background-color: #252D40;
-            color: white;
-            border: 1px solid #2A3244;
-            border-radius: 10px;
-            padding: 10px 14px;
-            font-size: 13px;
-            font-family: &quot;Segoe UI&quot;;
-        }
-
-        QLineEdit:focus {
-            border: 1px solid #4F8EF7;
-        }
-
-        QPushButton#registerBtn {
-            background-color: #4F8EF7;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            padding: 12px;
-            font-size: 14px;
-            font-weight: bold;
-            font-family: &quot;Segoe UI&quot;;
-        }
-
-        QPushButton#registerBtn:hover {
-            background-color: #3A7BD5;
-        }
-
-        QPushButton#registerBtn:pressed {
-            background-color: #2E6BC4;
-        }
-
-        QPushButton#loginRedirectBtn {
-            background: transparent;
-            color: #4F8EF7;
-            border: none;
-            font-size: 12px;
-            font-family: &quot;Segoe UI&quot;;
-        }
-
-        QPushButton#loginRedirectBtn:hover {
-            color: #7DB2FF;
-        }
-
-        QCheckBox {
-            color: #C0C8D8;
-            font-size: 12px;
-            font-family: &quot;Segoe UI&quot;;
-        }
-
-        </string>
-       </property>
        <layout class="QHBoxLayout" name="registerMainLayout">
         <property name="spacing">
          <number>0</number>
