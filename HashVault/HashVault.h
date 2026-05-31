@@ -15,20 +15,19 @@ public:
 
 
 private slots:
-    // Navigation
+	// Navigation & UI Helpers
     void openSettings();
     void openAddPasswordPage();
     void backToDashboardFromSettings();
     void openRegisterPage();
     void openLoginPage();
-    void clearPasswordInputs();
     void cancelPasswordEditing();
-
     void togglePasswordVisibility(QLineEdit* field,bool checked);
 
     // Authentication 
     void registerUser();
     void loginUser();
+    void logoutUser();
 
     // Password CRUD Operations
     void addPassword();
@@ -38,9 +37,13 @@ private slots:
 	void searchPasswords(const QString& keyword);
     void addPasswordRow(int row, const QSqlQuery& query);
     void changeMasterPassword();
+
+	// settings & auto lock
     void handleAutoLock(bool enabled);
     void autoLockVault();
-    void logoutUser();
+
+	// clean up input fields
+    void clearPasswordInputs();
     void clearLoginRegisterInputs();
 
 private:
@@ -50,5 +53,10 @@ private:
 
     int currentUserId = -1;         // store the logged-in user's id
     int editingPasswordId = -1;     // store the id of the password entry being edited
+
+    void setupAuthConnections();
+    void setupPasswordConnections();
+    void setupSettingsConnections();
+    void setupHelperConnections();
 };
 

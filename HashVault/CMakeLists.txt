@@ -21,6 +21,13 @@ set(PROJECT_SOURCES
     HashVault.ui
     HashVault.h
     HashVault.cpp
+
+    Database/DBManager.h
+    Database/DBManager.cpp
+    auth/HashVaultAuth.cpp
+    passwords/HashVaultPasswords.cpp
+    HashVaultSettings.cpp
+    Helper.cpp
 )
 
 qt_add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
