@@ -1,4 +1,8 @@
 #include "HashVault.h"
+#include <qmessagebox.h>
+#include <QRegularExpression>
+#include <QSqlQuery>
+#include <QSqlError>
 
 
 void HashVault::setupHelperConnections()
@@ -76,4 +80,94 @@ void HashVault::clearLoginRegisterInputs()
     ui.registerEmailInput->clear();
     ui.registerPasswordInput->clear();
     ui.registerConfirmPasswordInput->clear();
+}
+
+// ------------ validation  ------------------------
+bool HashVault::isValidEmail(const QString& email)
+{
+    // format validation
+    QRegularExpression regex(R"(^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$)");
+    if (!regex.match(email).hasMatch())
+    {
+        QMessageBox::warning(this, "Invalid Email", "Please enter a valid email address.");
+        return false;
+    }
+
+    // Check if email already exists
+    QSqlQuery query;
+
+    query.prepare("SELECT 1 FROM users WHERE email = ?");
+
+    query.addBindValue(email);
+
+    if (!query.exec())
+    {
+        QMessageBox::critical(this, "Database Error", query.lastError().text());
+        return false;
+    }
+
+    if (query.next())
+    {
+        QMessageBox::warning(this, "Email Exists", "This email is already registered.");
+        return false;
+    }
+
+    return true;
+}
+
+bool HashVault::isValidPassword(const QString& password)
+{
+    if (password.length() < 8)
+        return false;
+
+    bool hasUpper = false;
+    bool hasLower = false;
+    bool hasDigit = false;
+    bool hasSpecial = false;
+
+    for (QChar ch : password)   
+    {
+        if (ch.isUpper())
+            hasUpper = true;
+
+        else if (ch.isLower())
+            hasLower = true;
+
+        else if (ch.isDigit())
+            hasDigit = true;
+
+        else
+            hasSpecial = true;
+    }
+
+    return hasUpper && hasLower && hasDigit && hasSpecial;
+}
+
+bool HashVault::isValidUsername(const QString& username)
+{
+    if (username.length() < 4)
+    {
+        QMessageBox::warning(this, "Invalid Username", "Username must be at least 4 characters long.");
+        return false;
+    }
+
+    QSqlQuery query;
+
+    query.prepare("SELECT 1 FROM users WHERE username = ?");
+
+    query.addBindValue(username);
+
+    if (!query.exec())
+    {
+        QMessageBox::critical(this, "Database Error", query.lastError().text());
+        return false;
+    }
+
+    if (query.next())
+    {
+        QMessageBox::warning(this, "Username Exists", "Username is already taken.");
+        return false;
+    }
+
+    return true;
 }

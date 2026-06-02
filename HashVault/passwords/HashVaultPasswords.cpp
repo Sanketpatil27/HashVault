@@ -22,86 +22,6 @@ void HashVault::setupPasswordConnections() {
 }
 
 
-void HashVault::addPassword() {
-    QString website = ui.websiteInput->text();
-    QString username = ui.usernameFormInput->text();
-    QString password = ui.passwordFormInput->text();
-    QString notes = ui.notesInput->toPlainText();
-
-    if (website.isEmpty() || username.isEmpty() || password.isEmpty())
-    {
-        QMessageBox::warning(this, "Error", "Please fill all fields");
-        return;
-    }
-
-    QSqlQuery query;
-
-    // -1 means adding new entry
-    if (editingPasswordId == -1) {
-        query.prepare("insert into passwords (website, username, password, notes, user_id) values (?, ?, ?, ?, ?)");
-
-        query.addBindValue(website);
-        query.addBindValue(username);
-        query.addBindValue(password);
-        query.addBindValue(notes);
-        query.addBindValue(currentUserId); // associate the password entry with the logged-in user
-    }
-
-    // query for updating password 
-    else {
-        query.prepare(
-            "UPDATE passwords "
-            "SET website = ?, "
-            "username = ?, "
-            "password = ?, "
-            "notes = ? "
-            "WHERE id = ?"
-        );
-
-        query.addBindValue(website);
-        query.addBindValue(username);
-        query.addBindValue(password);
-        query.addBindValue(notes);
-        query.addBindValue(editingPasswordId);
-    }
-
-
-    if (query.exec()) {
-        QString successMessage = (editingPasswordId == -1)
-            ? "Password added successfully!"
-            : "Password updated successfully!";
-
-        QMessageBox::information(this, "Success", successMessage);
-
-        clearPasswordInputs();
-
-        loadPasswords();
-
-        ui.stackedWidget->setCurrentWidget(ui.dashboardPage); // Redirect back to dashboard after adding password
-    }
-    else {
-        QMessageBox::critical(this, "Error", "Failed to add password: " + query.lastError().text());
-    }
-}
-
-void HashVault::loadPasswords() {
-    ui.passwordTable->setRowCount(0); // Clear existing rows
-
-    QSqlQuery query;
-
-    query.prepare("SELECT * FROM passwords WHERE user_id = ? ORDER BY id");
-    query.addBindValue(currentUserId);
-
-    if (query.exec()) {
-        int row = 0;
-
-        while (query.next()) {
-            addPasswordRow(row, query);
-            row++;
-        }
-    }
-}
-
 void HashVault::deletePassword(int id) {
     QMessageBox::StandardButton reply;
 
@@ -174,6 +94,88 @@ void HashVault::searchPasswords(const QString& searchText) {
         }
     }
 }
+
+void HashVault::addPassword() {
+    QString website = ui.websiteInput->text();
+    QString username = ui.usernameFormInput->text();
+    QString password = ui.passwordFormInput->text();
+    QString notes = ui.notesInput->toPlainText();
+
+    if (website.isEmpty() || username.isEmpty() || password.isEmpty())
+    {
+        QMessageBox::warning(this, "Error", "Please fill all fields");
+        return;
+    }
+
+    QSqlQuery query;
+
+    // -1 means adding new entry
+    if (editingPasswordId == -1) {
+        query.prepare("insert into passwords (website, username, password, notes, user_id) values (?, ?, ?, ?, ?)");
+
+        query.addBindValue(website);
+        query.addBindValue(username);
+        query.addBindValue(password);
+        query.addBindValue(notes);
+        query.addBindValue(currentUserId); // associate the password entry with the logged-in user
+    }
+
+    // query for updating password 
+    else {
+        query.prepare(
+            "UPDATE passwords "
+            "SET website = ?, "
+            "username = ?, "
+            "password = ?, "
+            "notes = ? "
+            "WHERE id = ?"
+        );
+
+        query.addBindValue(website);
+        query.addBindValue(username);
+        query.addBindValue(password);
+        query.addBindValue(notes);
+        query.addBindValue(editingPasswordId);
+    }
+
+
+    if (query.exec()) {
+        QString successMessage = (editingPasswordId == -1)
+            ? "Password added successfully!"
+            : "Password updated successfully!";
+
+        QMessageBox::information(this, "Success", successMessage);
+
+        clearPasswordInputs();
+
+        loadPasswords();
+
+        ui.stackedWidget->setCurrentWidget(ui.dashboardPage); // Redirect back to dashboard after adding password
+    }
+    else {
+        QMessageBox::critical(this, "Error", "Failed to add password: " + query.lastError().text());
+    }
+}
+
+
+void HashVault::loadPasswords() {
+    ui.passwordTable->setRowCount(0); // Clear existing rows
+
+    QSqlQuery query;
+
+    query.prepare("SELECT * FROM passwords WHERE user_id = ? ORDER BY id");
+    query.addBindValue(currentUserId);
+
+    if (query.exec()) {
+        int row = 0;
+
+        while (query.next()) {
+            addPasswordRow(row, query);
+            row++;
+        }
+    }
+}
+
 
 // helper function for adding rows into table
 void HashVault::addPasswordRow(int row, const QSqlQuery& query)

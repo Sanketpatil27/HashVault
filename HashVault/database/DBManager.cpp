@@ -1,27 +1,93 @@
 #include "DBManager.h"
 
 #include <QSqlDatabase>
+#include <QSqlQuery>
 #include <QSqlError>
-#include <QDebug>
+
+#include <QSettings>
+#include <QFile>
+
+QString DBManager::m_lastError = "";
 
 bool DBManager::connectDatabase()
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
 
-    db.setHostName("localhost");
-    db.setDatabaseName("hashvault");
-    db.setUserName("postgres");
-    db.setPassword("root");
-    db.setPort(5432);
 
-    if (db.open())
+	// read db variables from config file
+
+    if (!QFile::exists("config/database.ini"))
     {
-        //qDebug() << "Database Connected Successfully";
-        return true;
+        m_lastError = "config/database.ini not found";
+        return false;
     }
 
-    //qDebug() << "Database Error:"
-    //    << db.lastError().text();
+    QSettings settings("config/database.ini",QSettings::IniFormat);
 
-    return false;
+    db.setHostName(settings.value("Database/Host").toString());
+    db.setDatabaseName(settings.value("Database/Database").toString());
+    db.setUserName(settings.value("Database/Username").toString());
+    db.setPassword(settings.value("Database/Password").toString());
+    db.setPort(settings.value("Database/Port").toInt());
+
+
+    if (!db.open())
+    {
+        m_lastError = db.lastError().text();
+        return false;
+    }
+
+    return createTables();
+}
+
+bool DBManager::createTables()
+{
+    QSqlQuery query;
+
+    bool success =
+        query.exec(
+            "CREATE TABLE IF NOT EXISTS users ("
+            "id SERIAL PRIMARY KEY,"
+            "fullname VARCHAR(100) NOT NULL,"
+            "username VARCHAR(50) UNIQUE NOT NULL,"
+            "email VARCHAR(100) UNIQUE NOT NULL,"
+            "password VARCHAR(255) NOT NULL"
+            ");"
+        );
+
+    if (!success)
+    {
+        m_lastError = query.lastError().text();
+        return false;
+    }
+
+    success =
+        query.exec(
+            "CREATE TABLE IF NOT EXISTS passwords ("
+            "id SERIAL PRIMARY KEY,"
+            "website VARCHAR(100) NOT NULL,"
+            "username VARCHAR(100) NOT NULL,"
+            "password VARCHAR(255) NOT NULL,"
+            "category VARCHAR(50),"
+            "user_id INTEGER NOT NULL,"
+            "notes TEXT,"
+            "CONSTRAINT fk_user "
+            "FOREIGN KEY(user_id) "
+            "REFERENCES users(id) "
+            "ON DELETE CASCADE"
+            ");"
+        );
+
+    if (!success)
+    {
+        m_lastError = query.lastError().text();
+        return false;
+    }
+
+    return true;
+}
+
+QString DBManager::lastError()
+{
+    return m_lastError;
 }

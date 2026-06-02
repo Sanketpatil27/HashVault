@@ -6,7 +6,6 @@
 #include <QDebug>
 #include <qmessagebox.h>
 #include <QInputDialog>
-#include <QTimer>   
 
 HashVault::HashVault(QWidget *parent)
     : QMainWindow(parent)
@@ -15,11 +14,7 @@ HashVault::HashVault(QWidget *parent)
 
     if (!DBManager::connectDatabase())
     {
-        QMessageBox::critical(
-            this,
-            "Database Error",
-            db.lastError().text()
-        );
+        QMessageBox::critical(this, "Database Error", DBManager::lastError());
         return;
     }
 

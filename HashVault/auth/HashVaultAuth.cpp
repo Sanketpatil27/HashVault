@@ -28,6 +28,34 @@ void HashVault::registerUser() {
         return;
     }
 
+    // username validation
+    if (!isValidUsername(username))
+    {
+        return;
+    }
+
+    // email validation
+    if (!isValidEmail(email))
+    {
+        return;
+    }
+
+    // password validation
+    if (!isValidPassword(password))
+    {
+        QMessageBox::warning(
+            this,
+            "Weak Password",
+            "Password must contain:\n"
+            "- At least 8 characters\n"
+            "- One uppercase letter\n"
+            "- One lowercase letter\n"
+            "- One number\n"
+            "- One special character"
+        );
+        return;
+    }
+
     if (password != confirmPassword)
     {
         QMessageBox::warning(this, "Error", "Passwords do not match");
@@ -44,7 +72,7 @@ void HashVault::registerUser() {
     query.addBindValue(password); // will hash the password before storing in later submissions
 
     if (query.exec()) {
-        QMessageBox::information(this, "Success", "User registered successfully!");
+        //QMessageBox::information(this, "Success", "User registered successfully!");
         ui.stackedWidget->setCurrentWidget(ui.loginPage); // Redirect to login page after successful registration
     }
     else {
@@ -70,7 +98,7 @@ void HashVault::loginUser() {
     if (query.exec() && query.next()) {
         currentUserId = query.value("id").toInt();          // store the logged-in user's ID for later use like fetching user-specific passwords
 
-        QMessageBox::information(this, "Success", "Login successful!");
+        //QMessageBox::information(this, "Success", "Login successful!");
 
         loadPasswords();
 
@@ -87,7 +115,7 @@ void HashVault::logoutUser() {
     currentUserId = -1;
     autoLockTimer->stop();
 
-    QMessageBox::information(this, "Logout", "Logged out successfully!");
+    //QMessageBox::information(this, "Logout", "Logged out successfully!");
 
     ui.stackedWidget->setCurrentWidget(ui.loginPage);
 }

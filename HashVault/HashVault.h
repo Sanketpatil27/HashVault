@@ -29,6 +29,11 @@ private slots:
     void loginUser();
     void logoutUser();
 
+    // validation helpers
+    bool isValidEmail(const QString& email);
+    bool isValidPassword(const QString& password);
+    bool isValidUsername(const QString& username);
+
     // Password CRUD Operations
     void addPassword();
     void loadPasswords(); 
@@ -48,7 +53,7 @@ private slots:
 
 private:
     Ui::HashVaultClass ui;
-	QSqlDatabase db;                // create global database object to be used across the application
+	//QSqlDatabase db;                // create global database object to be used across the application
     QTimer* autoLockTimer;
 
     int currentUserId = -1;         // store the logged-in user's id
