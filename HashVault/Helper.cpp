@@ -188,7 +188,7 @@ void HashVault::updatePasswordStatistics()
 
         totalPasswords++;
 
-        if (isStrongPassword(password))
+        if (isValidPassword(password))
             strongPasswords++;
         else
             weakPasswords++;
@@ -199,30 +199,4 @@ void HashVault::updatePasswordStatistics()
     ui.strongPasswordsValue->setText(QString::number(strongPasswords));
 
     ui.weakPasswordsValue->setText(QString::number(weakPasswords));
-}
-
-bool HashVault::isStrongPassword(const QString& password)
-{
-    bool hasUpper = false;
-    bool hasLower = false;
-    bool hasDigit = false;
-    bool hasSpecial = false;
-
-    for (QChar ch : password)
-    {
-        if (ch.isUpper())
-            hasUpper = true;
-        else if (ch.isLower())
-            hasLower = true;
-        else if (ch.isDigit())
-            hasDigit = true;
-        else
-            hasSpecial = true;
-    }
-
-    return password.length() >= 8 &&
-        hasUpper &&
-        hasLower &&
-        hasDigit &&
-        hasSpecial;
 }
