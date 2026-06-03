@@ -34,6 +34,7 @@ private slots:
     bool isValidPassword(const QString& password);
     bool isValidUsername(const QString& username);
     void updatePasswordStatistics();
+    QString hashPassword(const QString& password);
     
     // Password CRUD Operations
     void addPassword();

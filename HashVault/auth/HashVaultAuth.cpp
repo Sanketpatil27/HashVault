@@ -69,7 +69,7 @@ void HashVault::registerUser() {
     query.addBindValue(fullname);
     query.addBindValue(username);
     query.addBindValue(email);
-    query.addBindValue(password); // will hash the password before storing in later submissions
+    query.addBindValue(hashPassword(password));
 
     if (query.exec()) {
         //QMessageBox::information(this, "Success", "User registered successfully!");
@@ -93,7 +93,7 @@ void HashVault::loginUser() {
     QSqlQuery query;
     query.prepare("SELECT * FROM users WHERE username = ? AND password = ?"); // will hash the password before comparing in later submissions
     query.addBindValue(username);
-    query.addBindValue(password);
+    query.addBindValue(hashPassword(password));
 
     if (query.exec() && query.next()) {
         currentUserId = query.value("id").toInt();          // store the logged-in user's ID for later use like fetching user-specific passwords
