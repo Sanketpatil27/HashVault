@@ -33,7 +33,9 @@ private slots:
     bool isValidEmail(const QString& email);
     bool isValidPassword(const QString& password);
     bool isValidUsername(const QString& username);
-
+    void updatePasswordStatistics();
+	bool isStrongPassword(const QString& password);
+    
     // Password CRUD Operations
     void addPassword();
     void loadPasswords(); 
@@ -41,6 +43,7 @@ private slots:
     void editPassword(int id);
 	void searchPasswords(const QString& keyword);
     void addPasswordRow(int row, const QSqlQuery& query);
+	int findRowByPasswordId(int passwordId);
     void changeMasterPassword();
 
 	// settings & auto lock

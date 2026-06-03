@@ -43,7 +43,13 @@ void HashVault::deletePassword(int id) {
     query.addBindValue(id);
 
     if (query.exec()) {
-        loadPasswords(); // Refreshing the table after deletion
+        //loadPasswords(); // Refreshing the table after deletion
+        int row = findRowByPasswordId(id);
+
+        if (row != -1)
+            ui.passwordTable->removeRow(row);
+
+        updatePasswordStatistics();
     }
     else {
         QMessageBox::warning(this, "Error", query.lastError().text());
@@ -70,28 +76,19 @@ void HashVault::editPassword(int id) {
 }
 
 void HashVault::searchPasswords(const QString& searchText) {
-    ui.passwordTable->setRowCount(0);
 
-    QSqlQuery query;
-
-    query.prepare(
-        "SELECT * FROM passwords "
-        "WHERE user_id = ? "
-        "AND LOWER(website) LIKE LOWER(?) "
-        "ORDER BY id"
-    );
-
-    query.addBindValue(currentUserId);
-    query.addBindValue("%" + searchText + "%");
-
-    if (query.exec())
+    for (int row = 0; row < ui.passwordTable->rowCount(); row++)
     {
-        int row = 0;
-        while (query.next())
-        {
-            addPasswordRow(row, query);
-            row++;
-        }
+        QTableWidgetItem* websiteItem = ui.passwordTable->item(row, 1);
+
+        if (!websiteItem)
+            continue;
+
+        QString website = websiteItem->text();
+
+        bool match = website.contains(searchText, Qt::CaseInsensitive);
+
+        ui.passwordTable->setRowHidden(row, !match);
     }
 }
 
@@ -118,6 +115,26 @@ void HashVault::addPassword() {
         query.addBindValue(password);
         query.addBindValue(notes);
         query.addBindValue(currentUserId); // associate the password entry with the logged-in user
+
+        if (query.exec())
+        {
+            QSqlQuery fetchQuery;
+
+            fetchQuery.prepare("SELECT * FROM passwords WHERE user_id = ? ORDER BY id DESC LIMIT 1");
+            fetchQuery.addBindValue(currentUserId);
+
+            if (fetchQuery.exec() && fetchQuery.next())
+            {
+                // Add new row in table
+                int newRow = ui.passwordTable->rowCount();
+
+                addPasswordRow(newRow, fetchQuery);
+                QMessageBox::information(this, "Success", "Password added successfully!");
+            }
+        }
+        else {
+            QMessageBox::critical(this, "Error", "Failed to add password: " + query.lastError().text());
+        }
     }
 
     // query for updating password 
@@ -136,25 +153,30 @@ void HashVault::addPassword() {
         query.addBindValue(password);
         query.addBindValue(notes);
         query.addBindValue(editingPasswordId);
+
+        if (query.exec()) {
+            // UPDATE EXISTING ROW
+            int row = findRowByPasswordId(editingPasswordId);
+            
+            if (row != -1)
+            {
+                ui.passwordTable->item(row, 1)->setText(website);
+                ui.passwordTable->item(row, 2)->setText(username);
+                ui.passwordTable->item(row, 3)->setText(password);
+                ui.passwordTable->item(row, 4)->setText(notes);
+            }
+
+            QMessageBox::information(this, "Success", "Password updated successfully!");
+        }
+
+        else {
+            QMessageBox::critical(this, "Error", "Failed to add password: " + query.lastError().text());
+        }
     }
-
-
-    if (query.exec()) {
-        QString successMessage = (editingPasswordId == -1)
-            ? "Password added successfully!"
-            : "Password updated successfully!";
-
-        QMessageBox::information(this, "Success", successMessage);
-
-        clearPasswordInputs();
-
-        loadPasswords();
-
-        ui.stackedWidget->setCurrentWidget(ui.dashboardPage); // Redirect back to dashboard after adding password
-    }
-    else {
-        QMessageBox::critical(this, "Error", "Failed to add password: " + query.lastError().text());
-    }
+    
+    updatePasswordStatistics();
+    clearPasswordInputs();
+    ui.stackedWidget->setCurrentWidget(ui.dashboardPage); // Redirect back to dashboard after adding password
 }
 
 
@@ -174,6 +196,20 @@ void HashVault::loadPasswords() {
             row++;
         }
     }
+}
+
+// find row by id
+int HashVault::findRowByPasswordId(int passwordId)
+{
+    for (int row = 0; row < ui.passwordTable->rowCount(); row++)
+    {
+        int id = ui.passwordTable->item(row, 0)->text().toInt();
+
+        if (id == passwordId)
+            return row;
+    }
+
+    return -1;
 }
 
 

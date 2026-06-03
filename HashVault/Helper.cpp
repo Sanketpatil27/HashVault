@@ -171,3 +171,58 @@ bool HashVault::isValidUsername(const QString& username)
 
     return true;
 }
+
+
+
+//----- Password Status Helper -----
+void HashVault::updatePasswordStatistics()
+{
+    int totalPasswords = 0;
+    int strongPasswords = 0;
+    int weakPasswords = 0;
+
+    for (int row = 0; row < ui.passwordTable->rowCount(); row++)
+    {
+        QString password =
+            ui.passwordTable->item(row, 3)->text();
+
+        totalPasswords++;
+
+        if (isStrongPassword(password))
+            strongPasswords++;
+        else
+            weakPasswords++;
+    }
+
+    ui.totalPasswordsValue->setText(QString::number(totalPasswords));
+
+    ui.strongPasswordsValue->setText(QString::number(strongPasswords));
+
+    ui.weakPasswordsValue->setText(QString::number(weakPasswords));
+}
+
+bool HashVault::isStrongPassword(const QString& password)
+{
+    bool hasUpper = false;
+    bool hasLower = false;
+    bool hasDigit = false;
+    bool hasSpecial = false;
+
+    for (QChar ch : password)
+    {
+        if (ch.isUpper())
+            hasUpper = true;
+        else if (ch.isLower())
+            hasLower = true;
+        else if (ch.isDigit())
+            hasDigit = true;
+        else
+            hasSpecial = true;
+    }
+
+    return password.length() >= 8 &&
+        hasUpper &&
+        hasLower &&
+        hasDigit &&
+        hasSpecial;
+}

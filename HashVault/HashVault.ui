@@ -1023,7 +1023,7 @@
                <number>14</number>
               </property>
               <item>
-               <widget class="QLabel" name="statTotalCount">
+               <widget class="QLabel" name="totalPasswordsValue">
                 <property name="styleSheet">
                  <string notr="true">color: #4F8EF7; font-size: 24px; font-weight: bold; background: transparent; border: none;</string>
                 </property>
@@ -1033,7 +1033,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLabel" name="statTotalLabel">
+               <widget class="QLabel" name="totalPasswordsLabel">
                 <property name="styleSheet">
                  <string notr="true">color: #8892A4; font-size: 12px; background: transparent; border: none; font-family: &quot;Segoe UI&quot;;</string>
                 </property>
@@ -1062,7 +1062,7 @@
                <number>14</number>
               </property>
               <item>
-               <widget class="QLabel" name="statStrongCount">
+               <widget class="QLabel" name="strongPasswordsValue">
                 <property name="styleSheet">
                  <string notr="true">color: #4CAF50; font-size: 24px; font-weight: bold; background: transparent; border: none;</string>
                 </property>
@@ -1072,7 +1072,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLabel" name="statStrongLabel">
+               <widget class="QLabel" name="strongPasswordsLabel">
                 <property name="styleSheet">
                  <string notr="true">color: #8892A4; font-size: 12px; background: transparent; border: none; font-family: &quot;Segoe UI&quot;;</string>
                 </property>
@@ -1101,7 +1101,7 @@
                <number>14</number>
               </property>
               <item>
-               <widget class="QLabel" name="statWeakCount">
+               <widget class="QLabel" name="weakPasswordsValue">
                 <property name="styleSheet">
                  <string notr="true">color: #F7C54F; font-size: 24px; font-weight: bold; background: transparent; border: none;</string>
                 </property>
@@ -1111,7 +1111,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLabel" name="statWeakLabel">
+               <widget class="QLabel" name="weakPasswordsLabel">
                 <property name="styleSheet">
                  <string notr="true">color: #8892A4; font-size: 12px; background: transparent; border: none; font-family: &quot;Segoe UI&quot;;</string>
                 </property>

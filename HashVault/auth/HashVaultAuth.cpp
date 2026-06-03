@@ -101,6 +101,8 @@ void HashVault::loginUser() {
         //QMessageBox::information(this, "Success", "Login successful!");
 
         loadPasswords();
+        
+        updatePasswordStatistics();
 
         clearLoginRegisterInputs();     // clear the input fields from login/register
 
