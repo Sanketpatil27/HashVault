@@ -6,13 +6,14 @@ include(qt.cmake)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Sql)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Sql HttpServer)
 find_package(Qt${QT_VERSION_MAJOR}
     COMPONENTS
         Core
         Gui
         Widgets
         Sql
+        HttpServer
 )
 qt_standard_project_setup()
 
@@ -28,6 +29,10 @@ set(PROJECT_SOURCES
     passwords/HashVaultPasswords.cpp
     HashVaultSettings.cpp
     Helper.cpp
+    server/LocalServer.h
+    server/LocalServer.cpp
+    security/CryptoManager.h
+    security/CryptoManager.cpp
 )
 
 configure_file(
@@ -43,11 +48,17 @@ set_target_properties(${PROJECT_NAME}
         WIN32_EXECUTABLE TRUE
 )
 
+set(OPENSSL_ROOT_DIR "C:/Program Files/OpenSSL-Win64")
+find_package(OpenSSL REQUIRED)
+
 target_link_libraries(${PROJECT_NAME}
     PUBLIC
         Qt::Core
         Qt::Gui
         Qt::Widgets
         Qt::Sql
+        Qt::HttpServer
+        OpenSSL::SSL
+        OpenSSL::Crypto 
 )
 

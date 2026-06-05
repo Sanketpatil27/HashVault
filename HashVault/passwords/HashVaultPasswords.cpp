@@ -1,4 +1,5 @@
 #include "../HashVault.h"
+#include "../security/CryptoManager.h"
 
 #include <QSqlQuery>
 #include <QSqlError>
@@ -68,7 +69,7 @@ void HashVault::editPassword(int id) {
     {
         ui.websiteInput->setText(query.value(1).toString());
         ui.usernameFormInput->setText(query.value(2).toString());
-        ui.passwordFormInput->setText(query.value(3).toString());
+        ui.passwordFormInput->setText(CryptoManager::decrypt(query.value(3).toString()));
         ui.notesInput->setPlainText(query.value(6).toString());      // notes column in database is at 6th index
 
         ui.stackedWidget->setCurrentWidget(ui.addPasswordPage);
@@ -112,7 +113,7 @@ void HashVault::addPassword() {
 
         query.addBindValue(website);
         query.addBindValue(username);
-        query.addBindValue(password);
+        query.addBindValue(CryptoManager::encrypt(password));
         query.addBindValue(notes);
         query.addBindValue(currentUserId); // associate the password entry with the logged-in user
 
@@ -150,7 +151,7 @@ void HashVault::addPassword() {
 
         query.addBindValue(website);
         query.addBindValue(username);
-        query.addBindValue(password);
+        query.addBindValue(CryptoManager::encrypt(password));
         query.addBindValue(notes);
         query.addBindValue(editingPasswordId);
 
@@ -216,6 +217,8 @@ int HashVault::findRowByPasswordId(int passwordId)
 // helper function for adding rows into table
 void HashVault::addPasswordRow(int row, const QSqlQuery& query)
 {
+    QString decryptedPassword = CryptoManager::decrypt(query.value(3).toString());
+
     ui.passwordTable->insertRow(row);
 
     // column 0 is hidden and used to store the id of the password entry
@@ -224,7 +227,7 @@ void HashVault::addPasswordRow(int row, const QSqlQuery& query)
     // visible columns in the table for website, username, password and notes
     ui.passwordTable->setItem(row, 1, new QTableWidgetItem(query.value(1).toString())); // value at 1(column no.) is website in database
     ui.passwordTable->setItem(row, 2, new QTableWidgetItem(query.value(2).toString())); // username
-    ui.passwordTable->setItem(row, 3, new QTableWidgetItem(query.value(3).toString())); // password
+    ui.passwordTable->setItem(row, 3, new QTableWidgetItem(decryptedPassword)); // password
     ui.passwordTable->setItem(row, 4, new QTableWidgetItem(query.value(6).toString())); // notes
 
     // adding edit and delete buttons to each row in the table
@@ -304,7 +307,7 @@ void HashVault::changeMasterPassword() {
 
     verifyQuery.prepare("SELECT password FROM users WHERE id = ? AND password = ?");
     verifyQuery.addBindValue(currentUserId);
-    verifyQuery.addBindValue(currentPassword); // will hash the password before comparing in later submissions
+    verifyQuery.addBindValue(hashPassword(currentPassword));
 
     // if password is not matching then give warning
     if (!(verifyQuery.exec() && verifyQuery.next()))
@@ -324,7 +327,7 @@ void HashVault::changeMasterPassword() {
 
     updateQuery.prepare("UPDATE users SET password = ? WHERE id = ?");
 
-    updateQuery.addBindValue(newPassword);
+    updateQuery.addBindValue(hashPassword(newPassword));
     updateQuery.addBindValue(currentUserId);
 
     if (updateQuery.exec())

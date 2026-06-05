@@ -29,7 +29,7 @@ private slots:
     void loginUser();
     void logoutUser();
 
-    // validation helpers
+    // validation & hashing helpers
     bool isValidEmail(const QString& email);
     bool isValidPassword(const QString& password);
     bool isValidUsername(const QString& username);

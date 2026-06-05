@@ -83,7 +83,7 @@ void HashVault::clearLoginRegisterInputs()
     ui.registerConfirmPasswordInput->clear();
 }
 
-// ------------ validation  ------------------------
+// ------------ validation & Hashing ------------------------
 bool HashVault::isValidEmail(const QString& email)
 {
     // format validation
