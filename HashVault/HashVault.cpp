@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <qmessagebox.h>
 #include <QInputDialog>
+#include "server/LocalServer.h"
 
 HashVault::HashVault(QWidget *parent)
     : QMainWindow(parent)
@@ -17,6 +18,8 @@ HashVault::HashVault(QWidget *parent)
         QMessageBox::critical(this, "Database Error", DBManager::lastError());
         return;
     }
+
+    LocalServer::start();
 
     setupAuthConnections();
     setupPasswordConnections();

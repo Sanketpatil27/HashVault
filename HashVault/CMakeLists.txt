@@ -59,6 +59,6 @@ target_link_libraries(${PROJECT_NAME}
         Qt::Sql
         Qt::HttpServer
         OpenSSL::SSL
-        OpenSSL::Crypto 
+        OpenSSL::Crypto     
 )
 
