@@ -5,6 +5,7 @@ class DBManager
 {
 public:
     static bool connectDatabase();
+    static bool createDatabaseIfNotExists();
     static QString lastError();
 
 private:

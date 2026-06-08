@@ -9,27 +9,74 @@
 
 QString DBManager::m_lastError = "";
 
+bool DBManager::createDatabaseIfNotExists()
+{
+    QSettings settings("config/database.ini", QSettings::IniFormat);
+
+    QString databaseName =
+        settings.value("Database/Database").toString();
+
+    QSqlDatabase db =
+        QSqlDatabase::addDatabase("QPSQL", "db_creator");
+
+    db.setHostName(settings.value("Database/Host").toString());
+    db.setDatabaseName("postgres");
+    db.setUserName(settings.value("Database/Username").toString());
+    db.setPassword(settings.value("Database/Password").toString());
+    db.setPort(settings.value("Database/Port").toInt());
+
+    if (!db.open())
+    {
+        m_lastError = db.lastError().text();
+        return false;
+    }
+
+    QSqlQuery query(db);
+
+    if (!query.exec(
+        QString("SELECT 1 FROM pg_database WHERE datname='%1'")
+        .arg(databaseName)))
+    {
+        m_lastError = query.lastError().text();
+        return false;
+    }
+
+    if (!query.next())
+    {
+        if (!query.exec(
+            QString("CREATE DATABASE \"%1\"")
+            .arg(databaseName)))
+        {
+            m_lastError = query.lastError().text();
+            return false;
+        }
+    }
+
+    db.close();
+
+    return true;
+}
+
 bool DBManager::connectDatabase()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
-
-
-	// read db variables from config file
-
     if (!QFile::exists("config/database.ini"))
     {
         m_lastError = "config/database.ini not found";
         return false;
     }
 
-    QSettings settings("config/database.ini",QSettings::IniFormat);
+    if (!createDatabaseIfNotExists())
+        return false;
+
+    QSettings settings("config/database.ini", QSettings::IniFormat);
+
+    QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
 
     db.setHostName(settings.value("Database/Host").toString());
     db.setDatabaseName(settings.value("Database/Database").toString());
     db.setUserName(settings.value("Database/Username").toString());
     db.setPassword(settings.value("Database/Password").toString());
     db.setPort(settings.value("Database/Port").toInt());
-
 
     if (!db.open())
     {
