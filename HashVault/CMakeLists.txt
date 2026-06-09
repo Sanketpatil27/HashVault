@@ -33,6 +33,8 @@ set(PROJECT_SOURCES
     server/LocalServer.cpp
     security/CryptoManager.h
     security/CryptoManager.cpp
+    security/JwtManager.h
+    security/JwtManager.cpp
 )
 
 configure_file(
@@ -50,6 +52,11 @@ set_target_properties(${PROJECT_NAME}
 
 set(OPENSSL_ROOT_DIR "C:/Program Files/OpenSSL-Win64")
 find_package(OpenSSL REQUIRED)
+
+target_include_directories(${PROJECT_NAME}
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/third_party
+)
 
 target_link_libraries(${PROJECT_NAME}
     PUBLIC

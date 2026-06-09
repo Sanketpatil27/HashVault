@@ -186,7 +186,8 @@ void HashVault::loadPasswords() {
 
     QSqlQuery query;
 
-    query.prepare("SELECT * FROM passwords WHERE user_id = ? ORDER BY id");
+    //query.prepare("SELECT * FROM passwords WHERE user_id = ? ORDER BY id");
+    query.prepare("SELECT * FROM passwords WHERE user_id = ?");
     query.addBindValue(currentUserId);
 
     if (query.exec()) {

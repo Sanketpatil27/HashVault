@@ -7,7 +7,6 @@ class LocalServer
 {
 public:
     static bool start();
-    static QHash<QString, int> sessions;
 
 private:
     static QHttpServer server;

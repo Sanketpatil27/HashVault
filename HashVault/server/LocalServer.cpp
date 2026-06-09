@@ -1,4 +1,6 @@
 #include "LocalServer.h"
+#include <jwt-cpp/jwt.h>
+#include "../security/JwtManager.h"
 #include "../security/CryptoManager.h"
 #include <qmessagebox.h>
 
@@ -17,14 +19,13 @@
 
 QHttpServer LocalServer::server;
 
-QHash<QString, int> LocalServer::sessions;
 
 bool LocalServer::start()
 {
     // =====================================
     // HEALTH CHECK
     // =====================================
-
+   
     server.route(
         "/ping",
         []()
@@ -68,7 +69,7 @@ bool LocalServer::start()
 
             QString storedHash =
                 query.value("password").toString();
-            
+
             QByteArray enteredHash = 
                 QCryptographicHash::hash(
                     password.toUtf8(),
@@ -82,17 +83,9 @@ bool LocalServer::start()
                 );
             }
 
-            int userId =
-                query.value("id").toInt();
+            int userId = query.value("id").toInt();
 
-            QString token =
-                QUuid::createUuid()
-                .toString(
-                    QUuid::WithoutBraces
-                );
-
-            LocalServer::sessions[token] =
-                userId;
+            QString token = JwtManager::generateToken(userId,username);
 
             QJsonObject response;
 
@@ -113,13 +106,12 @@ bool LocalServer::start()
         "/passwords/<arg>",
         [](const QString& token)
         {
-            if (!LocalServer::sessions.contains(token))
+            int userId = JwtManager::validateToken(token);
+
+            if (userId == -1)
             {
                 return QByteArray("[]");
             }
-
-            int userId =
-                LocalServer::sessions[token];
 
             QSqlQuery query;
 
@@ -129,7 +121,7 @@ bool LocalServer::start()
                 "WHERE user_id = ? "
                 "ORDER BY id"
             );
-
+            
             query.addBindValue(userId);
 
             if (!query.exec())
@@ -180,13 +172,12 @@ bool LocalServer::start()
         [](const QString& token,
             const QString& website)
         {
-            if (!LocalServer::sessions.contains(token))
-            {
-                return QByteArray("{}");
-            }
+            int userId = JwtManager::validateToken(token);
 
-            int userId =
-                LocalServer::sessions[token];
+            if (userId == -1)
+            {
+                return QByteArray("[]");
+            }
 
             QSqlQuery query;
 
@@ -235,6 +226,158 @@ bool LocalServer::start()
         }
     );
 
+    //=======================
+    // Add Password Route
+    //=======================
+    server.route(
+        "/addPassword/<arg>/<arg>/<arg>/<arg>/<arg>",
+        [](const QString& token,
+            const QString& website,
+            const QString& username,
+            const QString& password,
+            const QString& notes)
+        {
+            int userId =
+                JwtManager::validateToken(token);
+
+            if (userId == -1)
+            {
+                return QByteArray(
+                    R"({"success":false})"
+                );
+            }
+
+            QSqlQuery query;
+
+            query.prepare(
+                "INSERT INTO passwords "
+                "(website, username, password, notes, user_id) "
+                "VALUES (?, ?, ?, ?, ?)"
+            );
+
+            query.addBindValue(website);
+            query.addBindValue(username);
+
+            query.addBindValue(
+                CryptoManager::encrypt(password)
+            );
+
+            query.addBindValue(notes);
+            query.addBindValue(userId);
+
+            bool success = query.exec();
+
+            QJsonObject response;
+
+            response["success"] = success;
+
+            return QJsonDocument(response)
+                .toJson(QJsonDocument::Compact);
+        }
+    );
+
+    //=======================
+    // Update Password Route
+    //=======================
+    server.route(
+        "/updatePassword/<arg>/<arg>/<arg>/<arg>/<arg>/<arg>",
+        [](const QString& token,
+            const QString& id,
+            const QString& website,
+            const QString& username,
+            const QString& password,
+            const QString& notes)
+        {
+            int userId =
+                JwtManager::validateToken(token);
+
+            if (userId == -1)
+            {
+                return QByteArray(
+                    R"({"success":false})"
+                );
+            }
+
+            QSqlQuery query;
+
+            query.prepare(
+                "UPDATE passwords "
+                "SET website=?, "
+                "username=?, "
+                "password=?, "
+                "notes=? "
+                "WHERE id=? "
+                "AND user_id=?"
+            );
+
+            query.addBindValue(website);
+            query.addBindValue(username);
+
+            query.addBindValue(
+                CryptoManager::encrypt(password)
+            );
+
+            query.addBindValue(notes);
+
+            query.addBindValue(
+                id.toInt()
+            );
+
+            query.addBindValue(userId);
+
+            bool success =
+                query.exec();
+
+            QJsonObject response;
+
+            response["success"] =
+                success;
+
+            return QJsonDocument(response)
+                .toJson(QJsonDocument::Compact);
+        }
+    );
+
+    //=======================
+    // Delete Password Route
+    //=======================
+    server.route(
+        "/deletePassword/<arg>/<arg>",
+        [](const QString& token,
+            const QString& id)
+        {
+            int userId =
+                JwtManager::validateToken(token);
+
+            if (userId == -1)
+            {
+                return QByteArray(
+                    R"({"success":false})"
+                );
+            }
+
+            QSqlQuery query;
+
+            query.prepare(
+                "DELETE FROM passwords "
+                "WHERE id=? "
+                "AND user_id=?"
+            );
+
+            query.addBindValue(id.toInt());
+
+            query.addBindValue(userId);
+
+            bool success = query.exec();
+
+            QJsonObject response;
+
+            response["success"] = success;
+
+            return QJsonDocument(response)
+                .toJson(QJsonDocument::Compact);
+        }
+    );
 
     // =====================================
     // START SERVER
@@ -254,11 +397,11 @@ bool LocalServer::start()
 
     server.bind(tcpServer);
 
-    QMessageBox::information(
-        nullptr,
-        "Server Started",
-        "HashVault local server started on port 8080"
-    );
+    //QMessageBox::information(
+    //    nullptr,
+    //    "Server Started",
+    //    "HashVault local server started on port 8080"
+    //);
 
     return true;
 }
