@@ -54,6 +54,10 @@ private slots:
     void clearPasswordInputs();
     void clearLoginRegisterInputs();
 
+	// category management helpers
+    void loadCategories();
+    void filterPasswordsByCategory(const QString& category);
+
 private:
     Ui::HashVaultClass ui;
 	//QSqlDatabase db;                // create global database object to be used across the application

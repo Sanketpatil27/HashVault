@@ -12,6 +12,11 @@ void HashVault::setupPasswordConnections() {
     connect(ui.searchInput, &QLineEdit::textChanged, this, &HashVault::searchPasswords);
     connect(ui.changeMasterPwdBtn, &QPushButton::clicked, this, &HashVault::changeMasterPassword);   // the the main master password of user
 
+	// category management
+    connect(ui.categoryFilterCombo, &QComboBox::currentTextChanged, this,
+        &HashVault::filterPasswordsByCategory
+    );
+
     // hidden column for id of the password
     ui.passwordTable->setColumnHidden(0, true);
     // setting default height for row in password table
@@ -51,6 +56,7 @@ void HashVault::deletePassword(int id) {
             ui.passwordTable->removeRow(row);
 
         updatePasswordStatistics();
+        loadCategories();
     }
     else {
         QMessageBox::warning(this, "Error", query.lastError().text());
@@ -71,6 +77,7 @@ void HashVault::editPassword(int id) {
         ui.usernameFormInput->setText(query.value(2).toString());
         ui.passwordFormInput->setText(CryptoManager::decrypt(query.value(3).toString()));
         ui.notesInput->setPlainText(query.value(6).toString());      // notes column in database is at 6th index
+        ui.categoryInput->setCurrentText(query.value("category").toString());
 
         ui.stackedWidget->setCurrentWidget(ui.addPasswordPage);
     }
@@ -98,6 +105,7 @@ void HashVault::addPassword() {
     QString username = ui.usernameFormInput->text();
     QString password = ui.passwordFormInput->text();
     QString notes = ui.notesInput->toPlainText();
+    QString category = ui.categoryInput->lineEdit()->text().trimmed();
 
     if (website.isEmpty() || username.isEmpty() || password.isEmpty())
     {
@@ -109,13 +117,14 @@ void HashVault::addPassword() {
 
     // -1 means adding new entry
     if (editingPasswordId == -1) {
-        query.prepare("insert into passwords (website, username, password, notes, user_id) values (?, ?, ?, ?, ?)");
+        query.prepare("insert into passwords (website, username, password, notes, user_id, category) values (?, ?, ?, ?, ?, ?)");
 
         query.addBindValue(website);
         query.addBindValue(username);
         query.addBindValue(CryptoManager::encrypt(password));
         query.addBindValue(notes);
         query.addBindValue(currentUserId); // associate the password entry with the logged-in user
+        query.addBindValue(category);
 
         if (query.exec())
         {
@@ -130,6 +139,7 @@ void HashVault::addPassword() {
                 int newRow = ui.passwordTable->rowCount();
 
                 addPasswordRow(newRow, fetchQuery);
+                loadCategories();
                 QMessageBox::information(this, "Success", "Password added successfully!");
             }
         }
@@ -145,7 +155,8 @@ void HashVault::addPassword() {
             "SET website = ?, "
             "username = ?, "
             "password = ?, "
-            "notes = ? "
+            "notes = ?, "
+			"category = ? "
             "WHERE id = ?"
         );
 
@@ -153,6 +164,7 @@ void HashVault::addPassword() {
         query.addBindValue(username);
         query.addBindValue(CryptoManager::encrypt(password));
         query.addBindValue(notes);
+        query.addBindValue(category);
         query.addBindValue(editingPasswordId);
 
         if (query.exec()) {
@@ -165,9 +177,11 @@ void HashVault::addPassword() {
                 ui.passwordTable->item(row, 2)->setText(username);
                 ui.passwordTable->item(row, 3)->setText(password);
                 ui.passwordTable->item(row, 4)->setText(notes);
+                ui.passwordTable->item(row, 5)->setText(ui.categoryInput->lineEdit()->text().trimmed());
             }
 
             QMessageBox::information(this, "Success", "Password updated successfully!");
+            loadCategories();
         }
 
         else {
@@ -231,6 +245,9 @@ void HashVault::addPasswordRow(int row, const QSqlQuery& query)
     ui.passwordTable->setItem(row, 3, new QTableWidgetItem(decryptedPassword)); // password
     ui.passwordTable->setItem(row, 4, new QTableWidgetItem(query.value(6).toString())); // notes
 
+    QString category = query.value("category").toString();
+    ui.passwordTable->setItem(row, 5, new QTableWidgetItem(category));
+
     // adding edit and delete buttons to each row in the table
     QWidget* actionWidget = new QWidget();
     QHBoxLayout* layout = new QHBoxLayout(actionWidget);
@@ -279,7 +296,7 @@ void HashVault::addPasswordRow(int row, const QSqlQuery& query)
     actionWidget->setLayout(layout);
 
     // adding to actions column
-    ui.passwordTable->setCellWidget(row, 5, actionWidget); // 4 is the column number for actions, first column is hidden
+    ui.passwordTable->setCellWidget(row, 6, actionWidget); // 4 is the column number for actions, first column is hidden
 
 
     // connecting buttons for edit and delete functionality by passing passwordId of current password row
@@ -335,4 +352,89 @@ void HashVault::changeMasterPassword() {
         QMessageBox::information(this, "Success", "Master password updated successfully!");
     else
         QMessageBox::warning(this, "Error", updateQuery.lastError().text());
+}
+
+void HashVault::loadCategories()
+{
+    ui.categoryFilterCombo->clear();
+    ui.categoryInput->clear();
+
+    ui.categoryFilterCombo->addItem("All Categories");
+
+    QSqlQuery query;
+
+    query.prepare(
+        "SELECT DISTINCT category "
+        "FROM passwords "
+        "WHERE user_id = ? "
+        "AND category IS NOT NULL "
+        "AND category <> '' "
+        "ORDER BY category"
+    );
+
+    query.addBindValue(currentUserId);
+
+    if (query.exec())
+    {
+        while (query.next())
+        {
+            // sidebar filter
+            ui.categoryFilterCombo->addItem(query.value(0).toString());
+
+            // Password form dropdown
+            QString category = query.value(0).toString();
+            ui.categoryInput->addItem(category);
+        }
+    }
+}
+
+void HashVault::filterPasswordsByCategory(const QString& category)
+{
+    ui.passwordTable->setRowCount(0);
+
+    QSqlQuery query;
+
+    if (category == "All Categories")
+    {
+        query.prepare(
+            "SELECT * "
+            "FROM passwords "
+            "WHERE user_id = ? "
+            "ORDER BY id"
+        );
+
+        query.addBindValue(
+            currentUserId
+        );
+    }
+    else
+    {
+        query.prepare(
+            "SELECT * "
+            "FROM passwords "
+            "WHERE user_id = ? "
+            "AND category = ? "
+            "ORDER BY id"
+        );
+
+        query.addBindValue(
+            currentUserId
+        );
+
+        query.addBindValue(
+            category
+        );
+    }
+
+    if (query.exec())
+    {
+        int row = 0;
+
+        while (query.next())
+        {
+            addPasswordRow(row, query);
+
+            row++;
+        }
+    }
 }

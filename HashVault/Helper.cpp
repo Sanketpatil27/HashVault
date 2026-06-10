@@ -68,6 +68,7 @@ void HashVault::clearPasswordInputs() {
     ui.usernameFormInput->clear();
     ui.passwordFormInput->clear();
     ui.notesInput->clear();
+    ui.categoryInput->setEditText("");
 
     editingPasswordId = -1;         // reseat the editing mode
 }

@@ -101,6 +101,7 @@ void HashVault::loginUser() {
         //QMessageBox::information(this, "Success", "Login successful!");
 
         loadPasswords();
+        loadCategories();
         
         updatePasswordStatistics();
 
