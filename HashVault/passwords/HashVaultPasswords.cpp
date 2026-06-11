@@ -5,6 +5,7 @@
 #include <QSqlError>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QCryptographicHash>
 
 void HashVault::setupPasswordConnections() {
     // Crud operations
@@ -365,10 +366,21 @@ void HashVault::changeMasterPassword()
     if (!ok || newPassword.isEmpty())
         return;
 
-    // Generate new salt + hash
-    QString newSalt = generateSalt();
+    // Generate new hash
+    QString newHash = hashPassword(newPassword, salt);
 
-    QString newHash = hashPassword(newPassword,newSalt);
+    QByteArray newKek = 
+        QCryptographicHash::hash(
+            (newHash + salt).toUtf8(),
+            QCryptographicHash::Sha256
+        );
+
+    CryptoManager::setCurrentKey(newKek);
+
+    QString newEncryptedDek =
+        CryptoManager::encrypt(
+            currentUserDek.toBase64()
+        );
 
     // Update DB
     QSqlQuery updateQuery;
@@ -376,19 +388,21 @@ void HashVault::changeMasterPassword()
     updateQuery.prepare(
         "UPDATE users "
         "SET password = ?, "
-        "salt = ? "
+        "encrypted_dek = ? "
         "WHERE id = ?"
     );
 
     updateQuery.addBindValue(newHash);
-
-    updateQuery.addBindValue(newSalt);
-
+    updateQuery.addBindValue(newEncryptedDek);
     updateQuery.addBindValue(currentUserId);
 
     if (updateQuery.exec())
     {
         QMessageBox::information(this, "Success","Master password updated successfully!");
+
+        CryptoManager::setCurrentKey(
+            currentUserDek
+        );
     }
     else
     {

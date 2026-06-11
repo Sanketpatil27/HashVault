@@ -1,6 +1,7 @@
 #include "../HashVault.h"
 #include <openssl/rand.h>
 #include <qcryptographichash.h>
+#include "../security/CryptoManager.h"
 
 #include <QSqlQuery>
 #include <QSqlError>
@@ -66,7 +67,11 @@ void HashVault::registerUser() {
 
     // if validation is successful then inserting user data into database
     QSqlQuery query;
-    query.prepare("INSERT INTO users (fullname, username, email, password, salt) VALUES (?, ?, ?, ?, ?)");
+    query.prepare(
+        "INSERT INTO users "
+        "(fullname, username, email, password, salt, encrypted_dek) "
+        "VALUES (?, ?, ?, ?, ?, ?)"
+    );
 
     query.addBindValue(fullname);
     query.addBindValue(username);
@@ -77,6 +82,25 @@ void HashVault::registerUser() {
 
     query.addBindValue(hashedPassword);
     query.addBindValue(salt);
+    
+    QByteArray dek(32, 0);
+
+    RAND_bytes(
+        reinterpret_cast<unsigned char*>(dek.data()),
+        32
+    );
+
+    QByteArray kek =
+        QCryptographicHash::hash(
+            (hashedPassword + salt).toUtf8(),
+            QCryptographicHash::Sha256
+        );
+
+    CryptoManager::setCurrentKey(kek);
+    
+    QString encryptedDek = CryptoManager::encrypt(dek.toBase64());
+
+    query.addBindValue(encryptedDek);
 
     if (query.exec()) {
         //QMessageBox::information(this, "Success", "User registered successfully!");
@@ -116,6 +140,25 @@ void HashVault::loginUser() {
 
         if (storedHash == enteredHash)
         {
+            QString encryptedDek = query.value("encrypted_dek").toString();
+
+            QByteArray kek =
+                QCryptographicHash::hash(
+                    (storedHash + salt).toUtf8(),
+                    QCryptographicHash::Sha256
+                );
+
+            CryptoManager::setCurrentKey(kek);
+
+            currentUserDek =
+                QByteArray::fromBase64(
+                    CryptoManager::decrypt(
+                        encryptedDek
+                    ).toUtf8()
+                );
+
+            CryptoManager::setCurrentKey(currentUserDek);
+
             currentUserId = query.value("id").toInt();
 
             loadPasswords();
@@ -142,7 +185,10 @@ void HashVault::logoutUser() {
     currentUserId = -1;
     autoLockTimer->stop();
 
-    //QMessageBox::information(this, "Logout", "Logged out successfully!");
+    currentUserDek.clear();
+
+    CryptoManager::setCurrentKey(QByteArray());
+
 
     ui.stackedWidget->setCurrentWidget(ui.loginPage);
 }

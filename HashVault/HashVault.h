@@ -65,6 +65,7 @@ private:
     QTimer* autoLockTimer;
 
     int currentUserId = -1;         // store the logged-in user's id
+    QByteArray currentUserDek;
     int editingPasswordId = -1;     // store the id of the password entry being edited
 
     void setupAuthConnections();

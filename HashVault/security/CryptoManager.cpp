@@ -1,50 +1,16 @@
 #include "CryptoManager.h"
 
-#include <QFile>
-#include <QDir>
 
 #include <openssl/evp.h>
 #include <openssl/rand.h>
 
 #include <QByteArray>
-#include <QCoreApplication>
 
-QByteArray CryptoManager::getEncryptionKey()
+QByteArray CryptoManager::currentKey;
+
+void CryptoManager::setCurrentKey(const QByteArray& key)
 {
-    QFile file("B:/Projects/QT Projects/HashVault/HashVault/config/encryption.key");
-
-    // Load existing key
-    if (file.exists())
-    {
-        if (file.open(QIODevice::ReadOnly))
-        {
-            return QByteArray::fromBase64(
-                file.readAll().trimmed()
-            );
-        }
-    }
-
-    // Create new random key
-    QByteArray key(32, 0);
-
-    RAND_bytes(
-        reinterpret_cast<unsigned char*>(
-            key.data()
-            ),
-        32
-    );
-
-    // Save it
-    if (file.open(QIODevice::WriteOnly))
-    {
-        file.write(
-            key.toBase64()
-        );
-
-        file.close();
-    }
-
-    return key;
+    currentKey = key;
 }
 
 QString CryptoManager::encrypt(const QString& plainText)
@@ -62,7 +28,7 @@ QString CryptoManager::encrypt(const QString& plainText)
     int outLen1 = 0;
     int outLen2 = 0;
 
-    QByteArray key = getEncryptionKey();
+    QByteArray key = currentKey;
     QByteArray iv(16, 0);
 
     RAND_bytes(reinterpret_cast<unsigned char*>(iv.data()),16);
@@ -125,7 +91,7 @@ QString CryptoManager::decrypt(const QString& cipherText)
     int outLen1 = 0;
     int outLen2 = 0;
 
-    QByteArray key = getEncryptionKey();
+    QByteArray key = currentKey;
 
     EVP_DecryptInit_ex(
         ctx,
