@@ -311,47 +311,89 @@ void HashVault::addPasswordRow(int row, const QSqlQuery& query)
         });
 }
 
-
-void HashVault::changeMasterPassword() {
+void HashVault::changeMasterPassword()
+{
     bool ok;
 
-    QString currentPassword = QInputDialog::getText(this, "Current Password", "Enter Current Password", QLineEdit::Normal, "", &ok);
+    QString currentPassword =
+        QInputDialog::getText(
+            this,
+            "Current Password",
+            "Enter Current Password",
+            QLineEdit::Normal,
+            "",
+            &ok
+        );
 
     if (!ok || currentPassword.isEmpty())
         return;
 
-    // verify the current password
+    // Verify current password
     QSqlQuery verifyQuery;
 
-    verifyQuery.prepare("SELECT password FROM users WHERE id = ? AND password = ?");
-    verifyQuery.addBindValue(currentUserId);
-    verifyQuery.addBindValue(hashPassword(currentPassword));
+    verifyQuery.prepare(
+        "SELECT password, salt "
+        "FROM users "
+        "WHERE id = ?"
+    );
 
-    // if password is not matching then give warning
+    verifyQuery.addBindValue(currentUserId);
+
     if (!(verifyQuery.exec() && verifyQuery.next()))
     {
         QMessageBox::warning(this, "Error", "Current password is incorrect");
+
         return;
     }
 
-    // ask for new password if matched
-    QString newPassword = QInputDialog::getText(this, "New Password", "Enter new master password:", QLineEdit::Normal, "", &ok);
+    QString storedHash = verifyQuery.value("password").toString();
+
+    QString salt = verifyQuery.value("salt").toString();
+
+    QString enteredHash = hashPassword(currentPassword, salt);
+
+    if (storedHash != enteredHash)
+    {
+        QMessageBox::warning(this, "Error", "Current password is incorrect");
+
+        return;
+    }
+
+    // Ask for new password
+    QString newPassword = QInputDialog::getText(this, "New Password","Enter new master password:",QLineEdit::Normal,"",&ok);
 
     if (!ok || newPassword.isEmpty())
         return;
 
-    // now update the password
+    // Generate new salt + hash
+    QString newSalt = generateSalt();
+
+    QString newHash = hashPassword(newPassword,newSalt);
+
+    // Update DB
     QSqlQuery updateQuery;
 
-    updateQuery.prepare("UPDATE users SET password = ? WHERE id = ?");
+    updateQuery.prepare(
+        "UPDATE users "
+        "SET password = ?, "
+        "salt = ? "
+        "WHERE id = ?"
+    );
 
-    updateQuery.addBindValue(hashPassword(newPassword));
+    updateQuery.addBindValue(newHash);
+
+    updateQuery.addBindValue(newSalt);
+
     updateQuery.addBindValue(currentUserId);
 
     if (updateQuery.exec())
-        QMessageBox::information(this, "Success", "Master password updated successfully!");
+    {
+        QMessageBox::information(this, "Success","Master password updated successfully!");
+    }
     else
+    {
         QMessageBox::warning(this, "Error", updateQuery.lastError().text());
+    }
 }
 
 void HashVault::loadCategories()

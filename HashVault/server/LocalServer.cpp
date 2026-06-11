@@ -35,8 +35,8 @@ bool LocalServer::start()
     );
 
     // =====================================
-// LOGIN
-// =====================================
+    // LOGIN
+    // =====================================
 
     server.route(
         "/login/<arg>/<arg>",
@@ -46,7 +46,7 @@ bool LocalServer::start()
             QSqlQuery query;
 
             query.prepare(
-                "SELECT id, password "
+                "SELECT id, password, salt "
                 "FROM users "
                 "WHERE username = ?"
             );
@@ -67,15 +67,15 @@ bool LocalServer::start()
                 );
             }
 
-            QString storedHash =
-                query.value("password").toString();
+            QString storedHash = query.value("password").toString();
+            QString salt = query.value("salt").toString();
 
             QByteArray enteredHash = 
                 QCryptographicHash::hash(
-                    password.toUtf8(),
+                    (password + salt).toUtf8(),
                     QCryptographicHash::Sha256
                 ).toHex();
-             
+
             if (storedHash != enteredHash)
             {
                 return QByteArray(
@@ -85,7 +85,7 @@ bool LocalServer::start()
 
             int userId = query.value("id").toInt();
 
-            QString token = JwtManager::generateToken(userId,username);
+            QString token = JwtManager::generateToken(userId, username);
 
             QJsonObject response;
 

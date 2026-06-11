@@ -1,4 +1,6 @@
 #include "../HashVault.h"
+#include <openssl/rand.h>
+#include <qcryptographichash.h>
 
 #include <QSqlQuery>
 #include <QSqlError>
@@ -64,12 +66,17 @@ void HashVault::registerUser() {
 
     // if validation is successful then inserting user data into database
     QSqlQuery query;
-    query.prepare("INSERT INTO users (fullname, username, email, password) VALUES (?, ?, ?, ?)");
+    query.prepare("INSERT INTO users (fullname, username, email, password, salt) VALUES (?, ?, ?, ?, ?)");
 
     query.addBindValue(fullname);
     query.addBindValue(username);
     query.addBindValue(email);
-    query.addBindValue(hashPassword(password));
+
+    QString salt = generateSalt();
+    QString hashedPassword = hashPassword(password, salt);
+
+    query.addBindValue(hashedPassword);
+    query.addBindValue(salt);
 
     if (query.exec()) {
         //QMessageBox::information(this, "Success", "User registered successfully!");
@@ -91,27 +98,44 @@ void HashVault::loginUser() {
     }
 
     QSqlQuery query;
-    query.prepare("SELECT * FROM users WHERE username = ? AND password = ?"); // will hash the password before comparing in later submissions
+
+    query.prepare(
+        "SELECT * FROM users "
+        "WHERE username = ?"
+    );
+
     query.addBindValue(username);
-    query.addBindValue(hashPassword(password));
 
-    if (query.exec() && query.next()) {
-        currentUserId = query.value("id").toInt();          // store the logged-in user's ID for later use like fetching user-specific passwords
+    if (query.exec() && query.next())
+    {
+        QString storedHash = query.value("password").toString();
 
-        //QMessageBox::information(this, "Success", "Login successful!");
+        QString salt = query.value("salt").toString();
 
-        loadPasswords();
-        loadCategories();
-        
-        updatePasswordStatistics();
+        QString enteredHash = hashPassword(password, salt);
 
-        clearLoginRegisterInputs();     // clear the input fields from login/register
+        if (storedHash == enteredHash)
+        {
+            currentUserId = query.value("id").toInt();
 
-        ui.stackedWidget->setCurrentWidget(ui.dashboardPage);               // Redirect to dashboard page after successful login
+            loadPasswords();
+            loadCategories();
+
+            updatePasswordStatistics();
+
+            clearLoginRegisterInputs();
+
+            ui.stackedWidget->setCurrentWidget(ui.dashboardPage);
+
+            return;
+        }
     }
-    else {
-        QMessageBox::critical(this, "Error", "Invalid username or password");
-    }
+
+    QMessageBox::critical(
+        this,
+        "Error",
+        "Invalid username or password"
+    );
 }
 
 void HashVault::logoutUser() {
@@ -123,3 +147,28 @@ void HashVault::logoutUser() {
     ui.stackedWidget->setCurrentWidget(ui.loginPage);
 }
 
+
+QString HashVault::generateSalt()
+{
+    QByteArray salt(16, 0);
+
+    RAND_bytes(
+        reinterpret_cast<unsigned char*>(
+            salt.data()
+            ),
+        16
+    );
+
+    return salt.toHex();
+}
+
+QString HashVault::hashPassword(const QString& password, const QString& salt)
+{
+    QByteArray hash = 
+        QCryptographicHash::hash(
+            (password + salt).toUtf8(),
+            QCryptographicHash::Sha256
+        );
+
+    return hash.toHex();
+}

@@ -98,7 +98,8 @@ bool DBManager::createTables()
             "fullname VARCHAR(100) NOT NULL,"
             "username VARCHAR(50) UNIQUE NOT NULL,"
             "email VARCHAR(100) UNIQUE NOT NULL,"
-            "password VARCHAR(255) NOT NULL"
+            "password VARCHAR(255) NOT NULL,"
+            "salt VARCHAR(64) NOT NULL"
             ");"
         );
 

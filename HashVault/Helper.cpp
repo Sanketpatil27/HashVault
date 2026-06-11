@@ -174,13 +174,6 @@ bool HashVault::isValidUsername(const QString& username)
     return true;
 }
 
-QString HashVault::hashPassword(const QString& password)
-{
-    QByteArray hash = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha256);
-
-    return hash.toHex();
-}
-
 
 //----- Password Status Helper -----
 void HashVault::updatePasswordStatistics()

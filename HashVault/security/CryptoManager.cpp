@@ -1,16 +1,50 @@
 #include "CryptoManager.h"
 
+#include <QFile>
+#include <QDir>
+
 #include <openssl/evp.h>
+#include <openssl/rand.h>
 
 #include <QByteArray>
+#include <QCoreApplication>
 
-namespace
+QByteArray CryptoManager::getEncryptionKey()
 {
-    const QByteArray AES_KEY =
-        "12345678901234567890123456789012";
+    QFile file("B:/Projects/QT Projects/HashVault/HashVault/config/encryption.key");
 
-    const QByteArray AES_IV =
-        "1234567890123456";
+    // Load existing key
+    if (file.exists())
+    {
+        if (file.open(QIODevice::ReadOnly))
+        {
+            return QByteArray::fromBase64(
+                file.readAll().trimmed()
+            );
+        }
+    }
+
+    // Create new random key
+    QByteArray key(32, 0);
+
+    RAND_bytes(
+        reinterpret_cast<unsigned char*>(
+            key.data()
+            ),
+        32
+    );
+
+    // Save it
+    if (file.open(QIODevice::WriteOnly))
+    {
+        file.write(
+            key.toBase64()
+        );
+
+        file.close();
+    }
+
+    return key;
 }
 
 QString CryptoManager::encrypt(const QString& plainText)
@@ -28,12 +62,17 @@ QString CryptoManager::encrypt(const QString& plainText)
     int outLen1 = 0;
     int outLen2 = 0;
 
+    QByteArray key = getEncryptionKey();
+    QByteArray iv(16, 0);
+
+    RAND_bytes(reinterpret_cast<unsigned char*>(iv.data()),16);
+
     EVP_EncryptInit_ex(
         ctx,
         EVP_aes_256_cbc(),
         nullptr,
-        reinterpret_cast<const unsigned char*>(AES_KEY.constData()),
-        reinterpret_cast<const unsigned char*>(AES_IV.constData())
+        reinterpret_cast<const unsigned char*>(key.constData()),
+        reinterpret_cast<const unsigned char*>(iv.constData())
     );
 
     EVP_EncryptUpdate(
@@ -54,7 +93,9 @@ QString CryptoManager::encrypt(const QString& plainText)
 
     encrypted.resize(outLen1 + outLen2);
 
-    return encrypted.toBase64();
+    QByteArray result = iv + encrypted;
+
+    return result.toBase64();
 }
 
 QString CryptoManager::decrypt(const QString& cipherText)
@@ -64,10 +105,19 @@ QString CryptoManager::decrypt(const QString& cipherText)
     if (!ctx)
         return "";
 
-    QByteArray input =
+    QByteArray combined =
         QByteArray::fromBase64(
             cipherText.toUtf8()
         );
+
+    if (combined.size() < 16)
+    {
+        return "";
+    }
+
+    QByteArray iv = combined.left(16);
+
+    QByteArray input = combined.mid(16);
 
     QByteArray decrypted;
     decrypted.resize(input.size());
@@ -75,12 +125,14 @@ QString CryptoManager::decrypt(const QString& cipherText)
     int outLen1 = 0;
     int outLen2 = 0;
 
+    QByteArray key = getEncryptionKey();
+
     EVP_DecryptInit_ex(
         ctx,
         EVP_aes_256_cbc(),
         nullptr,
-        reinterpret_cast<const unsigned char*>(AES_KEY.constData()),
-        reinterpret_cast<const unsigned char*>(AES_IV.constData())
+        reinterpret_cast<const unsigned char*>(key.constData()),
+        reinterpret_cast<const unsigned char*>(iv.constData())
     );
 
     EVP_DecryptUpdate(
