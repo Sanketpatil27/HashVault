@@ -116,7 +116,7 @@ bool LocalServer::start()
             QSqlQuery query;
 
             query.prepare(
-                "SELECT id, website, username, password, notes "
+                "SELECT id, website, username, password, category, notes "
                 "FROM passwords "
                 "WHERE user_id = ? "
                 "ORDER BY id"
@@ -148,6 +148,9 @@ bool LocalServer::start()
                     CryptoManager::decrypt(
                         query.value("password").toString()
                     );
+
+                password["category"] =
+                    query.value("category").toString();
 
                 password["notes"] =
                     query.value("notes").toString();
@@ -182,7 +185,7 @@ bool LocalServer::start()
             QSqlQuery query;
 
             query.prepare(
-                "SELECT id, website, username, password, notes "
+                "SELECT id, website, username, password, category, notes "
                 "FROM passwords "
                 "WHERE website = ? "
                 "AND user_id = ? "
@@ -218,6 +221,9 @@ bool LocalServer::start()
                     query.value("password").toString()
                 );
 
+            credential["category"] =
+                query.value("category").toString();
+
             credential["notes"] =
                 query.value("notes").toString();
 
@@ -230,11 +236,12 @@ bool LocalServer::start()
     // Add Password Route
     //=======================
     server.route(
-        "/addPassword/<arg>/<arg>/<arg>/<arg>/<arg>",
+        "/addPassword/<arg>/<arg>/<arg>/<arg>/<arg>/<arg>",
         [](const QString& token,
             const QString& website,
             const QString& username,
             const QString& password,
+            const QString& category,
             const QString& notes)
         {
             int userId =
@@ -251,8 +258,8 @@ bool LocalServer::start()
 
             query.prepare(
                 "INSERT INTO passwords "
-                "(website, username, password, notes, user_id) "
-                "VALUES (?, ?, ?, ?, ?)"
+                "(website, username, password, category, notes, user_id) "
+                "VALUES (?, ?, ?, ?, ?, ?)"
             );
 
             query.addBindValue(website);
@@ -262,6 +269,7 @@ bool LocalServer::start()
                 CryptoManager::encrypt(password)
             );
 
+            query.addBindValue(category);
             query.addBindValue(notes);
             query.addBindValue(userId);
 
@@ -280,12 +288,13 @@ bool LocalServer::start()
     // Update Password Route
     //=======================
     server.route(
-        "/updatePassword/<arg>/<arg>/<arg>/<arg>/<arg>/<arg>",
+        "/updatePassword/<arg>/<arg>/<arg>/<arg>/<arg>/<arg>/<arg>",
         [](const QString& token,
             const QString& id,
             const QString& website,
             const QString& username,
             const QString& password,
+            const QString& category,
             const QString& notes)
         {
             int userId =
@@ -305,6 +314,7 @@ bool LocalServer::start()
                 "SET website=?, "
                 "username=?, "
                 "password=?, "
+                "category=?, "
                 "notes=? "
                 "WHERE id=? "
                 "AND user_id=?"
@@ -317,6 +327,7 @@ bool LocalServer::start()
                 CryptoManager::encrypt(password)
             );
 
+            query.addBindValue(category);
             query.addBindValue(notes);
 
             query.addBindValue(
@@ -375,6 +386,53 @@ bool LocalServer::start()
             response["success"] = success;
 
             return QJsonDocument(response)
+                .toJson(QJsonDocument::Compact);
+        }
+    );
+
+    //=======================
+    // New Category Route
+    //=======================
+    server.route(
+        "/categories/<arg>",
+        [](const QString& token)
+        {
+            int userId =
+                JwtManager::validateToken(token);
+
+            if (userId == -1)
+            {
+                return QByteArray("[]");
+            }
+
+            QSqlQuery query;
+
+            query.prepare(
+                "SELECT DISTINCT category "
+                "FROM passwords "
+                "WHERE user_id = ? "
+                "AND category IS NOT NULL "
+                "AND category <> '' "
+                "ORDER BY category"
+            );
+
+            query.addBindValue(userId);
+
+            if (!query.exec())
+            {
+                return QByteArray("[]");
+            }
+
+            QJsonArray categories;
+
+            while (query.next())
+            {
+                categories.append(
+                    query.value(0).toString()
+                );
+            }
+
+            return QJsonDocument(categories)
                 .toJson(QJsonDocument::Compact);
         }
     );
