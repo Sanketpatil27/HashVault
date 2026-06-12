@@ -168,6 +168,8 @@ void HashVault::loginUser() {
 
             settings.setValue("userId", currentUserId);
 
+            settings.setValue("userDek", currentUserDek.toBase64());
+
             loadPasswords();
             loadCategories();
 
@@ -192,6 +194,8 @@ void HashVault::logoutUser() {
     QSettings settings("HashVault", "PasswordManager");
     settings.remove("loggedIn");
     settings.remove("userId");
+    settings.remove("userDek");
+    currentUserDek.clear();
 
     currentUserId = -1;
     autoLockTimer->stop();

@@ -1,5 +1,6 @@
 #include "HashVault.h"
 #include "Database/DBManager.h"
+#include "security/CryptoManager.h"
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
@@ -32,13 +33,29 @@ HashVault::HashVault(QWidget *parent)
 
     QSettings settings("HashVault", "PasswordManager");
 
-    if (settings.value("loggedIn",false).toBool())
+    if (settings.value("loggedIn", false).toBool())
     {
         currentUserId =
-            settings.value("userId" ).toInt();
+            settings.value("userId").toInt();
+
+        currentUserDek =
+            QByteArray::fromBase64(
+                settings.value("userDek")
+                .toByteArray()
+            );
+
+        if (currentUserDek.isEmpty())
+        {
+            settings.clear();
+            ui.stackedWidget->setCurrentWidget(ui.loginPage);
+            return;
+        }
+
+        CryptoManager::setCurrentKey(currentUserDek);
 
         loadPasswords();
         loadCategories();
+
         updatePasswordStatistics();
 
         ui.stackedWidget->setCurrentWidget(
