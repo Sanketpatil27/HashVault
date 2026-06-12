@@ -113,6 +113,44 @@ bool LocalServer::start()
                 return QByteArray("[]");
             }
 
+            QSqlQuery userQuery;
+
+            userQuery.prepare(
+                "SELECT password, salt, encrypted_dek "
+                "FROM users "
+                "WHERE id = ?"
+            );
+
+            userQuery.addBindValue(userId);
+
+            if (!(userQuery.exec() && userQuery.next()))
+            {
+                return QByteArray(
+                    R"({"success":false})"
+                );
+            }
+
+            QString storedHash = userQuery.value("password").toString();
+            QString salt = userQuery.value("salt").toString();
+            QString encryptedDek = userQuery.value("encrypted_dek").toString();
+
+            QByteArray kek =
+                QCryptographicHash::hash(
+                    (storedHash + salt).toUtf8(),
+                    QCryptographicHash::Sha256
+                );
+
+            CryptoManager::setCurrentKey(kek);
+
+            QByteArray dek =
+                QByteArray::fromBase64(
+                    CryptoManager::decrypt(
+                        encryptedDek
+                    ).toUtf8()
+                );
+
+            CryptoManager::setCurrentKey(dek);
+
             QSqlQuery query;
 
             query.prepare(
@@ -181,6 +219,44 @@ bool LocalServer::start()
             {
                 return QByteArray("[]");
             }
+
+            QSqlQuery userQuery;
+
+            userQuery.prepare(
+                "SELECT password, salt, encrypted_dek "
+                "FROM users "
+                "WHERE id = ?"
+            );
+
+            userQuery.addBindValue(userId);
+
+            if (!(userQuery.exec() && userQuery.next()))
+            {
+                return QByteArray(
+                    R"({"success":false})"
+                );
+            }
+
+            QString storedHash = userQuery.value("password").toString();
+            QString salt = userQuery.value("salt").toString();
+            QString encryptedDek = userQuery.value("encrypted_dek").toString();
+
+            QByteArray kek =
+                QCryptographicHash::hash(
+                    (storedHash + salt).toUtf8(),
+                    QCryptographicHash::Sha256
+                );
+
+            CryptoManager::setCurrentKey(kek);
+
+            QByteArray dek =
+                QByteArray::fromBase64(
+                    CryptoManager::decrypt(
+                        encryptedDek
+                    ).toUtf8()
+                );
+
+            CryptoManager::setCurrentKey(dek);
 
             QSqlQuery query;
 
@@ -254,6 +330,44 @@ bool LocalServer::start()
                 );
             }
 
+            QSqlQuery userQuery;
+
+            userQuery.prepare(
+                "SELECT password, salt, encrypted_dek "
+                "FROM users "
+                "WHERE id = ?"
+            );
+
+            userQuery.addBindValue(userId);
+
+            if (!(userQuery.exec() && userQuery.next()))
+            {
+                return QByteArray(
+                    R"({"success":false})"
+                );
+            }
+
+            QString storedHash = userQuery.value("password").toString();
+            QString salt = userQuery.value("salt").toString();
+            QString encryptedDek = userQuery.value("encrypted_dek").toString();
+
+            QByteArray kek =
+                QCryptographicHash::hash(
+                    (storedHash + salt).toUtf8(),
+                    QCryptographicHash::Sha256
+                );
+
+            CryptoManager::setCurrentKey(kek);
+
+            QByteArray dek =
+                QByteArray::fromBase64(
+                    CryptoManager::decrypt(
+                        encryptedDek
+                    ).toUtf8()
+                );
+
+            CryptoManager::setCurrentKey(dek);
+
             QSqlQuery query;
 
             query.prepare(
@@ -306,6 +420,44 @@ bool LocalServer::start()
                     R"({"success":false})"
                 );
             }
+
+            QSqlQuery userQuery;
+
+            userQuery.prepare(
+                "SELECT password, salt, encrypted_dek "
+                "FROM users "
+                "WHERE id = ?"
+            );
+
+            userQuery.addBindValue(userId);
+
+            if (!(userQuery.exec() && userQuery.next()))
+            {
+                return QByteArray(
+                    R"({"success":false})"
+                );
+            }
+
+            QString storedHash = userQuery.value("password").toString();
+            QString salt = userQuery.value("salt").toString();
+            QString encryptedDek = userQuery.value("encrypted_dek").toString();
+
+            QByteArray kek =
+                QCryptographicHash::hash(
+                    (storedHash + salt).toUtf8(),
+                    QCryptographicHash::Sha256
+                );
+
+            CryptoManager::setCurrentKey(kek);
+
+            QByteArray dek =
+                QByteArray::fromBase64(
+                    CryptoManager::decrypt(
+                        encryptedDek
+                    ).toUtf8()
+                );
+
+            CryptoManager::setCurrentKey(dek);
 
             QSqlQuery query;
 
