@@ -5,18 +5,20 @@
 
 void HashVault::setupSettingsConnections()
 {
-    // Adding AUTO LOCK TIMER
     autoLockTimer = new QTimer(this);
+
+    autoLockTimer->setSingleShot(true);
+
     connect(ui.autoLockCheckBox, &QCheckBox::toggled, this, &HashVault::handleAutoLock);
     connect(autoLockTimer, &QTimer::timeout, this, &HashVault::autoLockVault);
 }
 
 
- 
+
 void HashVault::handleAutoLock(bool enabled)
 {
     if (enabled)
-        autoLockTimer->start(10000);
+        autoLockTimer->start(60000);
     else
         autoLockTimer->stop();
 }

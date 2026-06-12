@@ -563,11 +563,15 @@
             </sizepolicy>
             </property>
 
+            <property name="leftMargin">
+                <number>-120</number>
+            </property>
+
             <layout class="QVBoxLayout" name="leftPanelLayout">
             <property name="spacing"><number>0</number></property>
-            <property name="leftMargin"><number>48</number></property>
+            <property name="leftMargin"><number>100</number></property>
             <property name="topMargin"><number>0</number></property>
-            <property name="rightMargin"><number>48</number></property>
+            <property name="rightMargin"><number>0</number></property>
             <property name="bottomMargin"><number>0</number></property>
 
             <item>
@@ -676,12 +680,13 @@
             <item>
             <layout class="QHBoxLayout" name="rightInnerLayout">
             <property name="spacing"><number>0</number></property>
-            <item>
+            <!-- <item>
                 <spacer name="cardLeftSpacer">
                 <property name="orientation"><enum>Qt::Orientation::Horizontal</enum></property>
                 <property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property>
                 </spacer>
-            </item>
+            </item> -->
+            <!-- <item stretch="1"> -->
 
             <!-- ── CARD (fixed size, floats at center of right half) ── -->
             <item>

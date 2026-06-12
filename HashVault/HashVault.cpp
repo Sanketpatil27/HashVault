@@ -7,6 +7,7 @@
 #include <qmessagebox.h>
 #include <QInputDialog>
 #include "server/LocalServer.h"
+#include <QApplication>
 
 HashVault::HashVault(QWidget *parent)
     : QMainWindow(parent)
@@ -25,7 +26,34 @@ HashVault::HashVault(QWidget *parent)
     setupPasswordConnections();
     setupSettingsConnections();
     setupHelperConnections();
+
+    qApp->installEventFilter(this);
 }
 
 HashVault::~HashVault()
 {}
+
+bool HashVault::eventFilter(QObject* obj, QEvent* event)
+{
+    Q_UNUSED(obj);
+
+    if (autoLockTimer &&
+        autoLockTimer->isActive())
+    {
+        switch (event->type())
+        {
+        case QEvent::MouseMove:
+        case QEvent::MouseButtonPress:
+        case QEvent::KeyPress:
+        case QEvent::Wheel:
+
+            autoLockTimer->start(60000);
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    return false;
+}

@@ -4,6 +4,7 @@
 #include "ui_HashVault.h"
 #include <QSqlDatabase>
 #include <QTimer>
+#include <QEvent>
 
 class HashVault : public QMainWindow
 {
@@ -59,6 +60,7 @@ private slots:
     void loadCategories();
     void filterPasswordsByCategory(const QString& category);
 
+    bool eventFilter(QObject* obj, QEvent* event) override;
 private:
     Ui::HashVaultClass ui;
 	//QSqlDatabase db;                // create global database object to be used across the application
