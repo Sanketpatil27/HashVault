@@ -2,6 +2,7 @@
 #include <openssl/rand.h>
 #include <qcryptographichash.h>
 #include "../security/CryptoManager.h"
+#include <qsettings.h>
 
 #include <QSqlQuery>
 #include <QSqlError>
@@ -161,6 +162,12 @@ void HashVault::loginUser() {
 
             currentUserId = query.value("id").toInt();
 
+            QSettings settings("HashVault", "PasswordManager");
+
+            settings.setValue("loggedIn", true);
+
+            settings.setValue("userId", currentUserId);
+
             loadPasswords();
             loadCategories();
 
@@ -182,6 +189,10 @@ void HashVault::loginUser() {
 }
 
 void HashVault::logoutUser() {
+    QSettings settings("HashVault", "PasswordManager");
+    settings.remove("loggedIn");
+    settings.remove("userId");
+
     currentUserId = -1;
     autoLockTimer->stop();
 

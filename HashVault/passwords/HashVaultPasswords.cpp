@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QCryptographicHash>
+#include <QHeaderView>
 
 void HashVault::setupPasswordConnections() {
     // Crud operations
@@ -23,9 +24,16 @@ void HashVault::setupPasswordConnections() {
     // setting default height for row in password table
     ui.passwordTable->verticalHeader()->setDefaultSectionSize(54);
     // adding extra width to notes column(index 4, 0th col is hidden)
-    ui.passwordTable->setColumnWidth(4, 280);
+    ui.passwordTable->setColumnWidth(4, 220);
     // width for actions column
-    ui.passwordTable->setColumnWidth(5, 140);
+    ui.passwordTable->setColumnWidth(6, 180);
+
+    ui.passwordTable->verticalHeader()->setHighlightSections(true);
+    ui.passwordTable->verticalHeader()->setSectionsClickable(true);
+
+    ui.passwordTable->setHorizontalScrollBarPolicy(
+        Qt::ScrollBarAsNeeded
+    );
 }
 
 

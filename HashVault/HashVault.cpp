@@ -8,6 +8,7 @@
 #include <QInputDialog>
 #include "server/LocalServer.h"
 #include <QApplication>
+#include <QSettings>
 
 HashVault::HashVault(QWidget *parent)
     : QMainWindow(parent)
@@ -28,6 +29,22 @@ HashVault::HashVault(QWidget *parent)
     setupHelperConnections();
 
     qApp->installEventFilter(this);
+
+    QSettings settings("HashVault", "PasswordManager");
+
+    if (settings.value("loggedIn",false).toBool())
+    {
+        currentUserId =
+            settings.value("userId" ).toInt();
+
+        loadPasswords();
+        loadCategories();
+        updatePasswordStatistics();
+
+        ui.stackedWidget->setCurrentWidget(
+            ui.dashboardPage
+        );
+    }
 }
 
 HashVault::~HashVault()
